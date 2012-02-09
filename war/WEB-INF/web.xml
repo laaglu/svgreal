@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <servlet>
+    <servlet-name>FetchServlet</servlet-name>
+    <display-name>FetchServlet</display-name>
+    <description>A servlet to fetch resources from the web on behalf of vectomatic.org webapps to accomodate same-origin restrictions</description>
+    <servlet-class>org.vectomatic.svg.edit.server.FetchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FetchServlet</servlet-name>
+    <url-pattern>/fetch</url-pattern>
+  </servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>vectomatic2.html</welcome-file>
+	</welcome-file-list>
+
+</web-app>
