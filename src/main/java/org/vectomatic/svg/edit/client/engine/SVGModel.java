@@ -615,11 +615,14 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 		SVGGElement g = modelGroup.getElement().cloneNode(true).cast();
 		
 		// Skip the element representing the viewbox
-		g.removeChild(DOMHelper.evaluateNodeXPath(g, "//svg:rect[@" + ATTR_KIND + "='" + ATTR_KIND_VIEWBOX + "']", SVGPrefixResolver.INSTANCE));
+		Node viewBoxElement = DOMHelper.evaluateNodeXPath(g, "//svg:rect[@" + ATTR_KIND + "='" + ATTR_KIND_VIEWBOX + "']", SVGPrefixResolver.INSTANCE);
 		
 		Node node = null;
 		while((node = g.getFirstChild()) != null) {
-			svg.getElement().appendChild(g.removeChild(node));
+			Node child = g.removeChild(node);
+			if (child != viewBoxElement) {
+				svg.getElement().appendChild(child);
+			}
 		}
 		return svg.getMarkup();
 	}
