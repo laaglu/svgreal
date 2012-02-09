@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" height="100" version="1.1"
+    viewBox="-1 -1 104.99999 104.99999" width="100" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <style type="text/css">.digit {
+  font-family:Arial;
+  font-weight:bold;
+  font-size:9px;
+}
+.digitColor {
+  fill:red;
+}
+.grads1 {
+  stroke:black;
+  fill:none;
+}
+.grads2 {
+  stroke:gray;
+  fill:none;
+}
+.c1 {
+  stroke:black;
+  fill:none;
+}
+.c2 {
+  stroke:black;
+  fill:white;
+}
+.needle1 {
+  stroke:none;
+  fill:black;
+}
+.needle1 {
+  stroke:black;
+  fill:none;
+}
+.glow {
+  fill:white;
+  opacity:0;
+  stroke:none;
+}
+.glow:hover {
+  fill:yellow;
+  opacity:0.5;
+}
+</style>
+    <defs>
+        <path
+            d="M 50.0,21.5 a 28.5,28.5 0,1,1 0,57.0 a 28.5,28.5 0,1,1 0,-57.0"
+            id="textPath" transform="rotate(-6,50.0,50.0)"/>
+        <linearGradient id="lg1">
+            <stop offset="0" style="stop-color:white;stop-opacity:1;"/>
+            <stop offset="1" style="stop-color:white;stop-opacity:0;"/>
+        </linearGradient>
+        <linearGradient id="lg2">
+            <stop offset="0" style="stop-color:#00ccd3;stop-opacity:0.78431374;"/>
+            <stop offset="0.5" style="stop-color:#00dce2;stop-opacity:0.58823532;"/>
+            <stop offset="0.75" style="stop-color:#00f8ff;stop-opacity:0.58823532;"/>
+            <stop offset="1" style="stop-color:#3e6dd3;stop-opacity:0.55113637;"/>
+        </linearGradient>
+        <linearGradient gradientUnits="userSpaceOnUse" id="lg3"
+            spreadMethod="repeat" x1="50" x2="50" xlink:href="#lg1"
+            y1="54" y2="0"/>
+        <radialGradient cx="50" cy="50" gradientUnits="userSpaceOnUse"
+            id="rg1" r="50" spreadMethod="repeat" xlink:href="#lg2"/>
+    </defs>
+    <path class="grads2" d="M 54.390194,8.23008 L 53.919815,12.705429M 58.73229,8.917801 L 57.796688,13.319466M 62.978714,10.055626 L 61.588135,14.335381M 67.08294,11.631092 L 65.252625,15.742046M 74.68698,16.021286 L 72.04195,19.661863M 78.103485,18.787916 L 75.0924,22.132069M 81.21208,21.896513 L 77.867935,24.907602M 83.978714,25.313019 L 80.338135,27.958052M 88.36891,32.91706 L 84.25795,34.747375M 89.944374,37.021286 L 85.66462,38.41186M 91.0822,41.267708 L 86.680534,42.203312M 91.76992,45.609806 L 87.29457,46.08018 M 91.76992,54.390194 L 87.29457,53.91982 M 91.0822,58.732292 L 86.680534,57.796688 M 89.944374,62.978714 L 85.66462,61.58814 M 88.36891,67.08294 L 84.25795,65.252625 M 83.978714,74.68698 L 80.338135,72.04195 M 81.21208,78.103485 L 77.867935,75.0924 M 78.103485,81.21208 L 75.0924,77.867935 M 74.68698,83.978714 L 72.04195,80.338135 M 67.08294,88.36891 L 65.252625,84.25795 M 62.978714,89.944374 L 61.588135,85.66462 M 58.73229,91.0822 L 57.796688,86.680534 M 54.390194,91.76992 L 53.919815,87.29457 M 45.609802,91.76992 L 46.08018,87.29457 M 41.26771,91.0822 L 42.203316,86.680534 M 37.02129,89.944374 L 38.411865,85.66462 M 32.91706,88.36891 L 34.74738,84.25796 M 25.31302,83.978714 L 27.958055,80.338135 M 21.896513,81.21208 L 24.9076,77.86793 M 18.787918,78.103485 L 22.13207,75.0924 M 16.021286,74.68698 L 19.661861,72.04195 M 11.631088,67.08293 L 15.742043,65.252625 M 10.055626,62.978714 L 14.335381,61.58814 M 8.917801,58.73229 L 13.319466,57.796684 M 8.23008,54.390198 L 12.705429,53.91982 M 8.23008,45.609806 L 12.705429,46.080185 M 8.917801,41.267704 L 13.319466,42.20331 M 10.055626,37.021286 L 14.335381,38.411865 M 11.631088,32.91707 L 15.742043,34.74738 M 16.021282,25.313025 L 19.66186,27.958057 M 18.787916,21.896515 L 22.132069,24.907602 M 21.896511,18.78792 L 24.907598,22.132072 M 25.313011,16.021294 L 27.958046,19.661867 M 32.91706,11.631092 L 34.747375,15.742046 M 37.021282,10.055626 L 38.411858,14.335381 M 41.2677,8.917801 L 42.203304,13.319466 M 45.60981,8.23008 L 46.08019,12.705429"/>
+    <path class="grads1" d="M 49.999996,3.0 L 50.0,12.5M 73.5,9.296806 L 68.75,17.524048M 90.70319,26.5 L 82.47595,31.25M 97.0,50.0 L 87.5,50.0M 90.70319,73.5 L 82.47595,68.75M 73.5,90.70319 L 68.75,82.47595M 49.999996,97.0 L 50.0,87.5M 26.499998,90.70319 L 31.249998,82.47595M 9.296806,73.5 L 17.524048,68.75M 3.0,49.999996 L 12.5,49.999996M 9.296806,26.5 L 17.524048,31.25M 26.500004,9.2968025 L 31.250004,17.524044"/>
+    <path class="needle1" d="M 45.0,50.0 l 5.0,-28.5 l 5.0,28.5 l -10.0,0"/>
+    <path class="needle2" d="M 45.0,50.0 l 5.0,28.5 l 5.0,-28.5 l -10.0,0"/>
+    <circle class="c1" cx="50.0" cy="50.0" r="37.5"/>
+    <circle class="c2" cx="50.0" cy="50.0" r="2.5"/>
+    <ellipse cx="50.0" cy="50.0" rx="50.0" ry="50.0" style="fill:url(#rg1);stroke:#0e1ddc;stroke-width:2;opacity:0.75;"/>
+    <ellipse cx="50.0" cy="27.0" rx="35.0" ry="27.0" style="fill:url(#lg3);stroke:#a4aaf9;stroke-width:1.34302318;opacity:0.3495575;"/>
+    <g id="textGroup" class="digit" transform="rotate(0,50.0,50.0)">
+        <text class="digitColor">
+            <textPath startOffset="0.0" xlink:href="#textPath">0</textPath>
+        </text>
+        <text>
+            <textPath startOffset="22.383848" xlink:href="#textPath">45</textPath>
+        </text>
+        <text class="digitColor">
+            <textPath startOffset="44.767696" xlink:href="#textPath">90</textPath>
+        </text>
+        <text>
+            <textPath startOffset="67.15154" xlink:href="#textPath">135</textPath>
+        </text>
+        <text class="digitColor">
+            <textPath startOffset="89.53539" xlink:href="#textPath">180</textPath>
+        </text>
+        <text>
+            <textPath startOffset="111.919235" xlink:href="#textPath">225</textPath>
+        </text>
+        <text class="digitColor">
+            <textPath startOffset="134.30309" xlink:href="#textPath">270</textPath>
+        </text>
+        <text>
+            <textPath startOffset="156.68694" xlink:href="#textPath">315</textPath>
+        </text>
+    </g>
+    <path class="glow" d="M 50.0,0 a 50.0,50.0 0,1,1 0,100.0 a 50.0,50.0 0,1,1 0,-100.0 M 50.0,12.5 a 37.5,37.5 0,1,0 0,75.0 a 37.5,37.5 0,1,0 0,-75.0"/>
+</svg>

@@ -1,0 +1,538 @@
+@CHARSET "UTF-8";
+@external .thumb, .thumb-wrap;
+
+.thumb-wrap {
+	border:1px solid white;
+	float:left;
+	margin:4px 0 4px 4px;
+	padding:5px;
+}
+
+.thumb img {
+	width:80px;
+	height:60px;
+}
+
+.compass-container {
+	overflow:hidden;
+	pointer-events:none;
+}
+
+.compass {
+	pointer-events:auto;
+	position:absolute;
+	right:40px;
+	top:5px;
+	width:100px;
+	height:100px;
+}
+
+.scale-slider-container {
+	overflow:hidden;
+	pointer-events:none;
+}
+
+.scale-slider {
+	pointer-events:auto;
+	position:absolute;
+	right:20px;
+	top:5px;
+	width:20px;
+	height:100px;
+}
+
+/*********************************************
+ *                Manipulator CSS
+ *********************************************/
+
+/***************** @transform ****************/
+.transform-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+	fill:#158AFF;
+}
+.transform-manipulator:hover {
+}
+.transform-manipulator > rect {
+	fill-opacity:0.2;
+	stroke-dasharray:2,2;
+}
+.transform-manipulator > rect:hover {
+	fill:yellow;
+}
+.transform-manipulator > g > rect {
+	fill-opacity:0.4;
+}
+.transform-manipulator > g > rect:hover {
+	fill:yellow;
+}
+.transform-manipulator > g > line {
+	stroke:black;
+	stroke-dasharray:2,1;
+}
+.transform-manipulator > circle {
+	fill-opacity:0.4;
+}
+.transform-manipulator > circle:hover {
+	fill:yellow;
+}
+
+/***************** <rect> *****************/
+.rect-geometry-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+}
+.rect-geometry-manipulator > rect {
+	fill-opacity:0.2;
+	stroke-dasharray:2,2;
+}
+.rect-geometry-manipulator > rect:hover {
+	fill:red;
+}
+.rect-geometry-manipulator > g > rect {
+	fill-opacity:0.4;
+}
+.rect-geometry-manipulator > g > rect:hover {
+	fill:red;
+}
+.rect-geometry-manipulator > g > circle {
+	fill-opacity:0.4;
+}
+.rect-geometry-manipulator > g > circle:hover {
+	fill:red;
+}
+
+/***************** <ellipse> *****************/
+.ellipse-geometry-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+}
+.ellipse-geometry-manipulator > ellipse {
+	fill-opacity:0.2;
+	stroke-dasharray:2,2;
+}
+.ellipse-geometry-manipulator > ellipse:hover {
+	fill:red;
+}
+.ellipse-geometry-manipulator > g > rect {
+	fill-opacity:0.4;
+}
+.ellipse-geometry-manipulator > g > rect:hover {
+	fill:red;
+}
+
+/***************** <circle> *****************/
+.circle-geometry-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+}
+.circle-geometry-manipulator > circle {
+	fill-opacity:0.2;
+	stroke-dasharray:2,2;
+}
+.circle-geometry-manipulator > circle {
+	fill:red;
+}
+.circle-geometry-manipulator > g > circle {
+	fill-opacity:0.4;
+}
+.circle-geometry-manipulator > g > circle:hover {
+	fill:red;
+}
+
+/********** <polyline> and <polygon> **********/
+.animated-point-selected {
+}
+.animated-point-unselected {
+}
+.animated-points-geometry-manipulator {
+	visibility:visible;
+}
+.animated-points-geometry-manipulator > polygon {
+	fill-opacity:0.2;
+}
+.animated-points-geometry-manipulator > polygon:hover {
+	fill:yellow;
+}
+.animated-points-geometry-manipulator > polyline {
+	stroke-opacity:0.2;
+	stroke-width:10;
+	stroke:green;
+	fill:none;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+}
+.animated-points-geometry-manipulator > polyline:hover {
+	stroke-opacity:0.4;
+}
+.animated-points-geometry-manipulator > g > line {
+	stroke:#0000C0;
+	stroke-width:3;
+}
+.animated-points-geometry-manipulator > g > line:hover {
+	stroke:yellow;
+	stroke-dasharray:4,2;
+}
+.animated-points-geometry-manipulator > g > line.animated-point-selected {
+	stroke:red;
+	stroke-opacity:0.5;
+}
+.animated-points-geometry-manipulator > g > line.animated-point-selected:hover {
+	stroke-opacity:1;
+}
+.animated-points-geometry-manipulator > g > rect {
+	stroke:black;
+	fill:yellow;
+	fill-opacity:0.5;
+}
+.animated-points-geometry-manipulator > g > rect:hover {
+	fill-opacity:1;
+}
+.animated-points-geometry-manipulator > g > rect.animated-point-selected {
+	stroke:black;
+	fill:red;
+	fill-opacity:0.5;
+}
+.animated-points-geometry-manipulator > g > rect.animated-point-selected:hover {
+	fill-opacity:1;
+}
+/***************** <line> *****************/
+.line-geometry-manipulator {
+	visibility:visible;
+}
+
+.line-geometry-manipulator > rect {
+	stroke:black;
+	fill:yellow;
+	fill-opacity:0.5;
+}
+.line-geometry-manipulator > rect:hover {
+	fill-opacity:1;
+}
+.line-geometry-manipulator > line {
+	stroke-opacity:0.2;
+	stroke-width:10;
+	stroke:green;
+	fill:none;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+}
+.line-geometry-manipulator > line:hover {
+	stroke-opacity:0.4;
+}
+
+/***************** <path> *****************/
+
+.path-geometry-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+}
+
+.path-geometry-manipulator > path {
+	stroke:lightblue;
+	fill:none;
+	stroke-width:5;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+}
+
+.path-geometry-manipulator > path[closed] {
+	stroke:lightblue;
+	fill:#FFFFFF;
+	fill-opacity:0.2;
+	stroke-width:2;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+}
+
+.path-geometry-manipulator path:hover {
+	stroke:green;
+}
+.path-geometry-manipulator > g > rect {
+	visibility:hidden;
+	stroke:black;
+	stroke-width:0.5;
+}
+.path-geometry-manipulator[mode] > g > rect {
+	visibility:visible;
+	fill:yellow;
+}
+
+.path-geometry-manipulator > g > rect:hover {
+	stroke-width:2;
+}
+
+.path-geometry-manipulator[mode] > g > rect[state="S"] {
+	visibility:visible;
+	fill:red;
+}
+
+.path-geometry-manipulator > g > rect:hover[state="S"] {
+	stroke-width:2;
+}
+
+.path-geometry-manipulator[mode] > g > rect[state="C"] {
+	visibility:visible;
+	fill:blue;
+}
+
+.path-geometry-manipulator > g > rect:hover[state="C"] {
+	stroke-width:2;
+}
+
+.path-geometry-manipulator > g > g  {
+	visibility:hidden;
+}
+.path-geometry-manipulator[mode="TANGENT"] > g > g {
+	visibility:visible;
+}
+.path-geometry-manipulator > g > g > circle {
+	stroke:black;
+	fill:yellow;
+	stroke-width:0.5;
+}
+.path-geometry-manipulator > g > g > circle:hover {
+	stroke-width:2;
+}
+.path-geometry-manipulator > g > g > line {
+	stroke:black;
+	stroke-dasharray:2,2;
+}
+.path-geometry-manipulator > g > g > line:hover {
+	stroke-width:2;
+}
+
+/***************** Color editor *****************/
+
+@external colorEditor-HSliderBar-shell, colorEditor-HSliderBar-line, colorEditor-HSliderBar-knob, colorEditor-HSliderBar-tick, colorEditor-HSliderBar-label, colorEditor-HSliderBar-shell-focused, colorEditor-HSliderBar-line-sliding;
+@external colorEditor-VSliderBar-shell, colorEditor-VSliderBar-line, colorEditor-VSliderBar-knob, colorEditor-VSliderBar-tick, colorEditor-VSliderBar-label, colorEditor-VSliderBar-shell-focused, colorEditor-VSliderBar-line-sliding;
+@external named-color;
+
+.colorEditor-HSliderBar-shell {
+  height: 15pt;
+  width: 100%;
+}
+
+.colorEditor-HSliderBar-shell .colorEditor-HSliderBar-line {
+  border: 1px solid black;
+  background-color: white;
+  height: 4px;
+  width: 95%;
+  top: 8px;
+  overflow: hidden;
+}
+
+.colorEditor-HSliderBar-shell .colorEditor-HSliderBar-knob {
+  top: 1pt;
+  width: 11px;
+  height: 16px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.colorEditor-HSliderBar-shell .colorEditor-HSliderBar-tick {
+}
+.colorEditor-HSliderBar-shell .colorEditor-HSliderBar-label {
+}
+.colorEditor-HSliderBar-shell-focused {
+}
+.colorEditor-HSliderBar-shell .colorEditor-HSliderBar-line-sliding {
+  cursor: pointer;
+}
+
+
+.colorEditor-VSliderBar-shell {
+  width: 19pt;
+  height: 100%;
+}
+
+.colorEditor-VSliderBar-shell .colorEditor-VSliderBar-line {
+  border: 1px solid black;
+  background-color: white;
+  width: 5px;
+  height: 95%;
+  left: 10px;
+  overflow: hidden;
+}
+
+.colorEditor-VSliderBar-shell .colorEditor-VSliderBar-knob {
+  left: 6pt;
+  width: 16px;
+  height: 11px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.colorEditor-VSliderBar-shell .colorEditor-VSliderBar-tick {
+  left: 22pt;
+  width: 8pt;
+  height: 1px;
+  background: black;
+  overflow: hidden;
+}
+
+.colorEditor-VSliderBar-shell .colorEditor-VSliderBar-label {
+  left: 2pt;
+  font-size: 8pt;
+  cursor: default;
+}
+
+.colorEditor-VSliderBar-shell-focused {
+}
+
+.colorEditor-VSliderBar-shell .colorEditor-VSliderBar-line-sliding {
+  background-color: #CDE2F7;
+  cursor: pointer;
+}
+
+
+.named-color {
+ 	width:100%;
+}
+
+.named-color > tbody > tr > td {
+ 	width:50%;
+}
+
+.named-color > tbody > tr > td > div {
+	left:2%;
+	border:1px solid black;
+	width:98%;
+	height:16px;
+}
+
+/***************** Dash-array editor *****************/
+.dasharray-cell > rect {
+	fill:white;
+	stroke:none;
+}
+
+.dasharray-cell:hover > rect {
+	fill:black;
+	stroke:none;
+}
+
+.dasharray-cell > line {
+	stroke:black;
+}
+
+.dasharray-cell:hover > line {
+	stroke:white;
+}
+
+/***************** Drag and drop *****************/
+
+@external .dnd, .dnd-copy, .dnd-link, .dnd-move;
+
+.dnd {
+  fill:url(#grad01);
+  stroke:black;
+  visibility:hidden;
+}
+svg[operation="copy"] > g > path.dnd-copy {
+  visibility:visible;
+}
+svg[operation="link"] > g > path.dnd-link {
+  visibility:visible;
+}
+svg[operation="move"] > g > path.dnd-move {
+  visibility:visible;
+}
+.ghost {
+	left:0px;
+	right:0px;
+	top:0px;
+	bottom:0px;
+	overflow:hidden;
+	position:absolute;
+}
+.ghost-source {
+	position:absolute;
+	left:22px;
+	top:3px;
+	width:92px;
+	height:75px;
+}
+.ghost-operation {
+	position:absolute;
+	left:3px;
+	bottom:3px;
+	width:16px;
+	height:16px;
+}
+.ghost-message {
+	font-size:8px;
+	position:absolute;
+	left:22px;
+	width:95px;
+	bottom:3px;
+	height:10px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+
+/***************** Grid and rulers *****************/
+
+.grid1 {
+fill:none;
+stroke:lightblue;
+}
+
+.grid2 {
+fill:none;
+stroke:darkblue;
+stroke-dasharray:1,1;
+}
+
+.hruler-pattern rect, .vruler-pattern rect {
+fill:white;
+stroke:none;
+}
+
+.hruler-pattern path, .vruler-pattern path {
+fill:none;
+stroke:black;
+}
+
+.hruler rect, .vruler rect {
+stroke:black;
+}
+
+.hruler g text {
+	font-size:8px;
+}
+
+.vruler g text {
+	font-size:8px;
+	writing-mode: tb; glyph-orientation-vertical: 0;
+}
+
+.grid-marker {
+	fill:yellow;
+	stroke:black;
+}
+
+/***************** Image href preview *****************/
+
+.image-href-drop-area {
+	position:relative;
+	height:32px;
+	border:1px solid black;
+}
+
+.image-href-drop-area div {
+	position:absolute; 
+	font-size: 10px; 
+	padding: 2px 2px; 
+	overflow: hidden; 
+	text-align: center; 
+	top:50%; 
+	height: 2em; 
+	margin-top:-1em;
+	color:gray;
+}
+
+.image-href-drop-area[accept="yes"] {
+	border:1px solid red;
+}
+
