@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vectomatic</groupId>
 	<artifactId>svgreal</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>svgreal</name>
 	<packaging>war</packaging>
 	<description>An SVG view and editor based on lib-gwt-svg and GXT</description>
@@ -15,9 +14,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>http://code.google.com/p/svgreal/source/browse/#svn/trunk</url>
-		<connection>scm:svn:http://svgreal.googlecode.com/svn/svgreal/trunk</connection>
-		<developerConnection>scm:svn:file:///home/laaglu/svn/svgreal/svgreal/trunk</developerConnection>
+		<url>http://code.google.com/p/svgreal/source/browse/#svn/tags/0.2</url>
+		<connection>scm:svn:http://svgreal.googlecode.com/svn/svgreal/tags/0.2</connection>
+		<developerConnection>scm:svn:file:///home/laaglu/svn/svgreal/svgreal/tags/0.2</developerConnection>
 	</scm>
 	<developers>
 		<developer>
