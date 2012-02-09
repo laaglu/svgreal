@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="-10 -10 110 110" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<linearGradient id="grad01">
+			<stop offset="0%" stop-color="#0A0" />
+			<stop offset="100%" stop-color="#FFF" />
+		</linearGradient>
+	</defs>
+	<g class="dnd">
+		<path class="dnd-copy" d="M 30,0 h 30 v 30 h 30 v 30 h -30 v 30 h -30 v -30 h -30 v -30 h 30 v -30 z" /> 
+		<path class="dnd-link" d="M 0,40 v 50 h 50 l -20,-20 l 40,-40 l 20,20 v -50 h -50 l 20,20 l -40,40 l -20,-20 z" />
+		<path class="dnd-move" d="M 0,30 h 40 v -30 l 45,45 l -45,45 v -30 h -40 v -30 z" />
+	</g>
+</svg>
