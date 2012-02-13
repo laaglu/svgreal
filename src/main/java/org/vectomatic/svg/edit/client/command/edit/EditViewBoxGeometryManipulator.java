@@ -150,9 +150,7 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
 			SVGViewBoxElementModel model = (SVGViewBoxElementModel) record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			float x = model.<Float>get(SVGConstants.SVG_X_ATTRIBUTE);
 			float y = model.<Float>get(SVGConstants.SVG_Y_ATTRIBUTE);
 			float width = model.<Float>get(SVGConstants.SVG_WIDTH_ATTRIBUTE);

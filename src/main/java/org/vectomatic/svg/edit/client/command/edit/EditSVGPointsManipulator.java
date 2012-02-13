@@ -235,9 +235,7 @@ public class EditSVGPointsManipulator extends EditManipulatorBase implements Sel
 			
 			SVGAnimatedPointsModelBase model = (SVGAnimatedPointsModelBase) record.getModel();
 			OMSVGElement element = model.getElementWrapper();
-			if (element.hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, element.getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
 			SVGPointsStore store = model.getPointsStore();
 			

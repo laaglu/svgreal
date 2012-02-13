@@ -17,7 +17,6 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
-import org.vectomatic.dom.svg.OMNode;
 import org.vectomatic.dom.svg.OMSVGCircleElement;
 import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
@@ -32,6 +31,7 @@ import org.vectomatic.svg.edit.client.model.svg.SVGRectElementModel;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.store.Record;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -174,9 +174,7 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
 			SVGRectElementModel model = (SVGRectElementModel) record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			SVGLength x = model.get(SVGConstants.SVG_X_ATTRIBUTE);
 			SVGLength y = model.get(SVGConstants.SVG_Y_ATTRIBUTE);
 			SVGLength width = model.get(SVGConstants.SVG_WIDTH_ATTRIBUTE);

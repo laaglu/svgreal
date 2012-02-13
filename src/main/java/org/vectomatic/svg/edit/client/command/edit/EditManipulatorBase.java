@@ -22,11 +22,15 @@ import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGSVGElement;
+import org.vectomatic.dom.svg.itf.ISVGLocatable;
+import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.event.KeyPressProcessor;
 import org.vectomatic.svg.edit.client.event.MouseDownProcessor;
 import org.vectomatic.svg.edit.client.event.MouseMoveProcessor;
 import org.vectomatic.svg.edit.client.event.MouseUpProcessor;
+import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
 
+import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.data.ChangeListener;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.store.Record;
@@ -134,4 +138,23 @@ public abstract class EditManipulatorBase implements MouseDownProcessor, MouseMo
     public OMSVGPoint getCoordinates(MouseEvent<? extends EventHandler> e, OMSVGMatrix m) {
     	return svg.createSVGPoint(e.getClientX(), e.getClientY()).matrixTransform(m);
     }
+    
+	@Override
+	public void modelChanged(ChangeEvent event) {
+		if (monitorModel) {
+			// Update the transform for the group containing the
+			// manipulator UI
+			SVGElementModel model = (SVGElementModel) record.getModel();
+			ISVGLocatable locatable = (ISVGLocatable) model.getElementWrapper();
+			OMSVGGElement elementGroup = model.getOwner().getElementGroup();
+			OMSVGMatrix m = locatable.getTransformToElement(elementGroup);
+			if (!m.isIdentity()) {
+				StringBuilder builder = new StringBuilder();
+				builder.append(SVGConstants.TRANSFORM_MATRIX + "(");
+				builder.append(m.getDescription());
+				builder.append(")");
+				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, builder.toString());
+			}
+		}
+	}
 }

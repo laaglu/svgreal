@@ -68,4 +68,12 @@
 		<rect x="50" y="50" width="30" height="-10" style="stroke: black;fill:none;"/>
 		<line x1="100" y1="20" x2="100" y2="20" style="stroke: black;"/>
      </g>
+     <g transform="translate(20 20)">
+     	<g transform="rotate(10 0,0)">
+     		<rect width="60" height="40" x="-30" y="-20" style="fill: brown; stroke: black;" transform="translate(95 20)"/>
+			<polygon
+				points="-10,-10 5,-10 20,20 -15,29"
+				style="fill: gray; stroke: black;"/>
+     	</g>
+     </g>
 </svg>

@@ -159,9 +159,7 @@ public class EditLineGeometryManipulator extends EditManipulatorBase implements 
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
 			SVGLineElementModel model = (SVGLineElementModel) record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			SVGLength x1 = model.get(SVGConstants.SVG_X1_ATTRIBUTE);
 			SVGLength y1 = model.get(SVGConstants.SVG_Y1_ATTRIBUTE);
 			SVGLength x2 = model.get(SVGConstants.SVG_X2_ATTRIBUTE);

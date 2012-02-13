@@ -143,9 +143,7 @@ public class EditCircleGeometryManipulator extends EditManipulatorBase {
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
 			SVGCircleElementModel model = (SVGCircleElementModel) record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			SVGLength cx = model.get(SVGConstants.SVG_CX_ATTRIBUTE);
 			SVGLength cy = model.get(SVGConstants.SVG_CY_ATTRIBUTE);
 			SVGLength r = model.get(SVGConstants.SVG_R_ATTRIBUTE);

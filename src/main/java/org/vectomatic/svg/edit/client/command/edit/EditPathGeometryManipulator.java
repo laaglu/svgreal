@@ -197,9 +197,7 @@ public class EditPathGeometryManipulator extends EditManipulatorBase implements 
 		GWT.log("SVGPathManipulator.modelChanged(" + monitorModel + "," + toString() + ")");
 		if (monitorModel && record != null) {
 			SVGPathElementModel model = (SVGPathElementModel) record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			
 			// Clear segment list
 			path.setAttribute(SVGConstants.SVG_D_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_D_ATTRIBUTE));

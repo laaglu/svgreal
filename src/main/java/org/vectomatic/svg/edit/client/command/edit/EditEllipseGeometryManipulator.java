@@ -149,9 +149,7 @@ public class EditEllipseGeometryManipulator extends EditManipulatorBase {
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
 			SVGEllipseElementModel model = (SVGEllipseElementModel)record.getModel();
-			if (model.getElement().hasAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE)) {
-				g.setAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE, model.getElement().getAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE));
-			}
+			super.modelChanged(event);
 			SVGLength cx = model.get(SVGConstants.SVG_CX_ATTRIBUTE);
 			SVGLength cy = model.get(SVGConstants.SVG_CY_ATTRIBUTE);
 			SVGLength rx = model.get(SVGConstants.SVG_RX_ATTRIBUTE);
