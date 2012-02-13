@@ -507,6 +507,7 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 	
 	public void redirect(String language) {
 		StringBuilder path = new StringBuilder(GWT.getHostPageBaseURL());
+		path.append("svgreal.html");
 		path.append("?");
 		path.append(PARAM_LOCALE);
 		path.append("=");
