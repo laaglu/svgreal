@@ -16,7 +16,7 @@
 	<scm>
 		<url>http://code.google.com/p/svgreal/source/browse/#svn/trunk</url>
 		<connection>scm:svn:http://svgreal.googlecode.com/svn/svgreal/trunk</connection>
-		<developerConnection>scm:svn:file:///home/laaglu/svn/svgreal/svgreal/trunk</developerConnection>
+		<developerConnection>scm:svn:file:///home/laaglu/svn/svgrealpub/svgreal/trunk</developerConnection>
 	</scm>
 	<developers>
 		<developer>
