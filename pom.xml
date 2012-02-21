@@ -104,6 +104,23 @@
 	</properties>
 	
 	<build>
+		<!-- Use maven filtering to update project version in the UI -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>org/vectomatic/svg/edit/client/*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>org/vectomatic/svg/edit/client/*.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
         <plugins>
 			<!-- Build using java 1.6. GWT requires at least Java 1.5 -->
 			<plugin>
@@ -127,7 +144,9 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.4.0</version>
+			  <!-- Use patch version of GWT maven plugin to address
+			   http://jira.codehaus.org/browse/MGWT-216 and http://jira.codehaus.org/browse/MGWT-285 -->
+				<version>2.4.0-1-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>gwt compilation</id>

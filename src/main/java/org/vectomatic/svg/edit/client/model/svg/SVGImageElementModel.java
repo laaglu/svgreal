@@ -171,6 +171,7 @@ public class SVGImageElementModel extends SVGNamedElementModel {
 			geometricCategory.addMetadata(href);
 			IFactoryInstantiator<?>[][] contextMenuFactories = new IFactoryInstantiator<?>[][] {
 				{
+					EditGeometryCommandFactory.INSTANTIATOR,
 					EditTransformCommandFactory.INSTANTIATOR
 				}
 			};

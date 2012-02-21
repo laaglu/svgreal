@@ -10,6 +10,8 @@ package com.extjs.gxt.ui.client.binding;
 import org.vectomatic.svg.edit.client.SvgrealApp;
 import org.vectomatic.svg.edit.client.command.ICommandFactory;
 import org.vectomatic.svg.edit.client.command.IFactoryInstantiator;
+import org.vectomatic.svg.edit.client.model.IMetadata;
+import org.vectomatic.svg.edit.client.model.ValidationError;
 import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
@@ -203,7 +205,21 @@ public class FieldBinding {
    * @param updateOriginalValue true to update the original value
    */
   public void updateField(boolean updateOriginalValue) {
-    Object val = onConvertModelValue(model.get(property));
+    Object value = model.get(property);
+    Object val = onConvertModelValue(value);
+    /*begin laaglu*/
+    if (model instanceof SVGElementModel) {
+    	// Mark invalid fields
+    	SVGElementModel svgModel = (SVGElementModel)model;
+    	IMetadata metadata = svgModel.getMetaModel().getMetadata(property);
+    	ValidationError error = metadata.validate(svgModel.getElement(), value);
+    	if (error != null) {
+    		field.markInvalid(error.getMessage());
+    	} else {
+    		field.clearInvalid();
+    	}
+    }
+    /*end laaglu*/
 
     if (updateOriginalValue) {
       field.setOriginalValue(val);

@@ -36,10 +36,9 @@ public class ValidationError {
 	 */
 	protected Severity severity;
 	/**
-	 * The name of the error in the 
-	 * {@link com.google.gwt.i18n.client.ConstantsWithLookup} interface
+	 * The error message before arguments substitution
 	 */
-	protected String id;
+	protected String message;
 	/**
 	 * Args of the error message
 	 */
@@ -48,26 +47,24 @@ public class ValidationError {
 	 * Constructor
 	 * @param severity
 	 * The error severity
-	 * @param id
-	 * The name of the error in the 
-	 * {@link com.google.gwt.i18n.client.ConstantsWithLookup} interface
+	 * @param message
+	 * The error message before arguments substitution
 	 */
-	public ValidationError(Severity severity, String id) {
-		this(severity, id, null);
+	public ValidationError(Severity severity, String message) {
+		this(severity, message, null);
 	}
 	/**
 	 * Constructor
 	 * @param severity
 	 * The error severity
-	 * @param id
-	 * The name of the error in the 
-	 * {@link com.google.gwt.i18n.client.ConstantsWithLookup} interface
+	 * @param message
+	 * The error message before arguments substitution
 	 * @param args
 	 * Args of the error message
 	 */
-	public ValidationError(Severity severity, String id, Object[] args) {
+	public ValidationError(Severity severity, String message, Object[] args) {
 		this.severity = severity;
-		this.id = id;
+		this.message = message;
 		this.args = args;
 	}
 	/**
@@ -79,21 +76,10 @@ public class ValidationError {
 		return severity;
 	}
 	/**
-	 * Returns the name of the error in the 
-	 * {@link com.google.gwt.i18n.client.ConstantsWithLookup} interface
-	 * @return
-	 * The name of the error in the 
-	 * {@link com.google.gwt.i18n.client.ConstantsWithLookup} interface
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
 	 * Returns a localized error message for this error.
 	 * @return a localized error message for this error.
 	 */
 	public String getMessage() {
-		String message = ValidationConstants.INSTANCE.getString(id);
 		return (args == null) ? message : Format.substitute(message, args);
 	}
 }

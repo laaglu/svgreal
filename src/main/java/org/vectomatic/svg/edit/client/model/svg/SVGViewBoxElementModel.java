@@ -161,8 +161,8 @@ public class SVGViewBoxElementModel extends SVGElementModel {
 				},
 				EditGeometryCommandFactory.INSTANTIATOR,
 				new IValidator<Float, SVGElement>() {
-					final ValidationError zeroHeight = new ValidationError(Severity.ERROR, ValidationConstants.INSTANCE.zeroHeight());
-					final ValidationError negativeHeight = new ValidationError(Severity.ERROR, ValidationConstants.INSTANCE.negativeHeight());
+					final ValidationError zeroHeight = new ValidationError(Severity.ERROR, "zeroHeight");
+					final ValidationError negativeHeight = new ValidationError(Severity.ERROR, "negativeHeight");
 					@Override
 					public ValidationError validate(SVGElement model, Float value) {
 						if (value == 0) {

@@ -1,5 +1,5 @@
 /**********************************************
- * Copyright (C) 2011 Lukas Laag
+ * Copyright (C) 2011, 2012 Lukas Laag
  * This file is part of svgreal.
  * 
  * svgreal is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import java.util.Map;
 import org.vectomatic.dom.svg.impl.SVGElement;
 import org.vectomatic.svg.edit.client.command.edit.EditCircleGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditEllipseGeometryManipulator;
+import org.vectomatic.svg.edit.client.command.edit.EditImageGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditLineGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditManipulatorBase;
 import org.vectomatic.svg.edit.client.command.edit.EditPathGeometryManipulator;
@@ -35,6 +36,7 @@ import org.vectomatic.svg.edit.client.model.ModelConstants;
 import org.vectomatic.svg.edit.client.model.svg.SVGCircleElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGEllipseElementModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGImageElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGLineElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPathElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPolygonElementModel;
@@ -119,6 +121,9 @@ public class EditGeometryCommandFactory extends ManipulatorCommandFactoryBase {
 		}
 		if (metaModel == SVGPathElementModel.getPathElementMetaModel()) {
 			return new EditPathGeometryManipulator();
+		}
+		if (metaModel == SVGImageElementModel.getImageElementMetaModel()) {
+			return new EditImageGeometryManipulator();
 		}
 		return null;
 	}

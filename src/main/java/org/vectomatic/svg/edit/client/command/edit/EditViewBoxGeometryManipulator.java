@@ -1,5 +1,5 @@
 /**********************************************
- * Copyright (C) 2011 Lukas Laag
+ * Copyright (C) 2011, 2012 Lukas Laag
  * This file is part of svgreal.
  * 
  * svgreal is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRectElement;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
-import org.vectomatic.svg.edit.client.model.svg.SVGViewBoxElementModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.store.Record;
@@ -37,7 +37,7 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
- * 2D manipulator class to edit rectangle geometry.
+ * 2D manipulator class to edit viewbox geometry.
  */
 public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	protected static enum Mode {
@@ -95,7 +95,7 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public OMSVGElement bind(Record record) {
 		this.record = record;
-		SVGViewBoxElementModel model = (SVGViewBoxElementModel) record.getModel();
+		SVGElementModel model = (SVGElementModel) record.getModel();
 		mode = Mode.PASSIVE;
 		// Create the graphical representations for the manipulator
 		// The manipulator has the following SVG structure
@@ -106,8 +106,8 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 		//   <rect/>   bottom-right corner
 		//  </g>
 		// </g>
-		OMSVGRectElement rect = (OMSVGRectElement) model.getElementWrapper();
-		svg = rect.getOwnerSVGElement();
+		OMSVGElement element = model.getElementWrapper();
+		svg = element.getOwnerSVGElement();
 		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
 		g = document.createSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().rectGeometryManipulator());
@@ -135,7 +135,7 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 			if (parent != null) {
 				parent.removeChild(g.getElement());
 			}
-			SVGViewBoxElementModel model = (SVGViewBoxElementModel) record.getModel();
+			SVGElementModel model = (SVGElementModel) record.getModel();
 			model.removeChangeListener(this);
 			record = null;
 			g = null;
@@ -149,7 +149,7 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
-			SVGViewBoxElementModel model = (SVGViewBoxElementModel) record.getModel();
+			SVGElementModel model = (SVGElementModel) record.getModel();
 			super.modelChanged(event);
 			float x = model.<Float>get(SVGConstants.SVG_X_ATTRIBUTE);
 			float y = model.<Float>get(SVGConstants.SVG_Y_ATTRIBUTE);

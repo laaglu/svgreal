@@ -1,5 +1,5 @@
 /**********************************************
- * Copyright (C) 2011 Lukas Laag
+ * Copyright (C) 2012 Lukas Laag
  * This file is part of svgreal.
  * 
  * svgreal is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
-import org.vectomatic.dom.svg.OMSVGCircleElement;
 import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
@@ -26,21 +25,22 @@ import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRectElement;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
+import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGLength;
-import org.vectomatic.svg.edit.client.model.svg.SVGRectElementModel;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.store.Record;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
- * 2D manipulator class to edit rectangle geometry.
+ * 2D manipulator class to edit image geometry.
  */
-public class EditRectGeometryManipulator extends EditManipulatorBase {
+public class EditImageGeometryManipulator extends EditManipulatorBase {
 	protected static enum Mode {
 		PASSIVE {
 			public boolean consumeEvent() { return false; }
@@ -52,12 +52,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 			public boolean consumeEvent() { return true; }
 		},
 		BOTTOM_RIGHT {
-			public boolean consumeEvent() { return true; }
-		},
-		RADIUS_X {
-			public boolean consumeEvent() { return true; }
-		},
-		RADIUS_Y {
 			public boolean consumeEvent() { return true; }
 		};
 		public abstract boolean consumeEvent();
@@ -79,14 +73,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 	 */
 	protected OMSVGRectElement bottomRightHandle;
 	/**
-	 * The corner x radius handle
-	 */
-	protected OMSVGCircleElement radiusXHandle;
-	/**
-	 * The corner y radius handle
-	 */
-	protected OMSVGCircleElement radiusYHandle;
-	/**
 	 * The transform from screen coordinates to
 	 * manipulator coordinates when a mousedown event occurs
 	 */
@@ -99,7 +85,7 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 	/**
 	 * Constructor
 	 */
-	public EditRectGeometryManipulator() {
+	public EditImageGeometryManipulator() {
 	}
 	/**
 	 * Binds this manipulator to the specified SVG rect.
@@ -110,7 +96,7 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public OMSVGElement bind(Record record) {
 		this.record = record;
-		SVGRectElementModel model = (SVGRectElementModel) record.getModel();
+		SVGElementModel model = (SVGElementModel) record.getModel();
 		mode = Mode.PASSIVE;
 		// Create the graphical representations for the manipulator
 		// The manipulator has the following SVG structure
@@ -119,12 +105,10 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		//  <g>
 		//   <rect/>   top-left corner
 		//   <rect/>   bottom-right corner
-		//   <circle/> rx handle
-		//   <circle/> ry handle
 		//  </g>
 		// </g>
-		OMSVGRectElement rect = (OMSVGRectElement) model.getElementWrapper();
-		svg = rect.getOwnerSVGElement();
+		OMSVGElement element = model.getElementWrapper();
+		svg = element.getOwnerSVGElement();
 		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
 		g = document.createSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().rectGeometryManipulator());
@@ -132,14 +116,10 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		OMSVGGElement handleGroup = document.createSVGGElement();
 		topLeftHandle = document.createSVGRectElement();
 		bottomRightHandle = document.createSVGRectElement();
-		radiusXHandle = document.createSVGCircleElement();
-		radiusYHandle = document.createSVGCircleElement();
 		g.appendChild(posHandle);
 		g.appendChild(handleGroup);
 		handleGroup.appendChild(topLeftHandle);
 		handleGroup.appendChild(bottomRightHandle);
-		handleGroup.appendChild(radiusXHandle);
-		handleGroup.appendChild(radiusYHandle);
 		monitorModel = true;
 		model.addChangeListener(this);
 		scheduleInit();
@@ -156,15 +136,13 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 			if (parent != null) {
 				parent.removeChild(g.getElement());
 			}
-			SVGRectElementModel model = (SVGRectElementModel) record.getModel();
+			SVGElementModel model = (SVGElementModel) record.getModel();
 			model.removeChangeListener(this);
 			record = null;
 			g = null;
 			posHandle = null;
 			topLeftHandle = null;
 			bottomRightHandle = null;
-			radiusXHandle = null;
-			radiusYHandle = null;
 			mode = Mode.PASSIVE;
 		}
 	}
@@ -172,20 +150,16 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
-			SVGRectElementModel model = (SVGRectElementModel) record.getModel();
+			SVGElementModel model = (SVGElementModel) record.getModel();
 			super.modelChanged(event);
 			SVGLength x = model.get(SVGConstants.SVG_X_ATTRIBUTE);
 			SVGLength y = model.get(SVGConstants.SVG_Y_ATTRIBUTE);
 			SVGLength width = model.get(SVGConstants.SVG_WIDTH_ATTRIBUTE);
 			SVGLength height = model.get(SVGConstants.SVG_HEIGHT_ATTRIBUTE);
-			SVGLength rx = model.get(SVGConstants.SVG_RX_ATTRIBUTE);
-			SVGLength ry = model.get(SVGConstants.SVG_RY_ATTRIBUTE);
 			posHandle.getX().getBaseVal().newValueSpecifiedUnits(x.getUnit(), x.getValue());
 			posHandle.getY().getBaseVal().newValueSpecifiedUnits(y.getUnit(), y.getValue());
 			posHandle.getWidth().getBaseVal().newValueSpecifiedUnits(width.getUnit(), width.getValue());
 			posHandle.getHeight().getBaseVal().newValueSpecifiedUnits(height.getUnit(), height.getValue());
-			posHandle.getRx().getBaseVal().newValueSpecifiedUnits(rx.getUnit(), rx.getValue());
-			posHandle.getRy().getBaseVal().newValueSpecifiedUnits(ry.getUnit(), ry.getValue());
 			update();
 		}
 	}
@@ -195,8 +169,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		float y = posHandle.getY().getBaseVal().getValue();
 		float width = posHandle.getWidth().getBaseVal().getValue();
 		float height = posHandle.getHeight().getBaseVal().getValue();
-		float rx = posHandle.getRx().getBaseVal().getValue();
-		float ry = posHandle.getRy().getBaseVal().getValue();
 		float hs = Math.max(5, Math.min(width, height) * 0.2f);
 		topLeftHandle.getX().getBaseVal().setValue(x);
 		topLeftHandle.getY().getBaseVal().setValue(y);
@@ -206,12 +178,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		bottomRightHandle.getY().getBaseVal().setValue(y + height - hs);
 		bottomRightHandle.getWidth().getBaseVal().setValue(hs);
 		bottomRightHandle.getHeight().getBaseVal().setValue(hs);
-		radiusXHandle.getCx().getBaseVal().setValue(x + width - rx);
-		radiusXHandle.getCy().getBaseVal().setValue(y + 0.5f * hs);
-		radiusXHandle.getR().getBaseVal().setValue(0.5f * hs);
-		radiusYHandle.getCx().getBaseVal().setValue(x + width - 0.5f * hs);
-		radiusYHandle.getCy().getBaseVal().setValue(y + ry);
-		radiusYHandle.getR().getBaseVal().setValue(0.5f * hs);
 	}
 	
 	@Override
@@ -224,8 +190,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 			record.set(SVGConstants.SVG_Y_ATTRIBUTE, new SVGLength(posHandle.getY().getBaseVal()));
 			record.set(SVGConstants.SVG_WIDTH_ATTRIBUTE, new SVGLength(posHandle.getWidth().getBaseVal()));
 			record.set(SVGConstants.SVG_HEIGHT_ATTRIBUTE, new SVGLength(posHandle.getHeight().getBaseVal()));
-			record.set(SVGConstants.SVG_RX_ATTRIBUTE, new SVGLength(posHandle.getRx().getBaseVal()));
-			record.set(SVGConstants.SVG_RY_ATTRIBUTE, new SVGLength(posHandle.getRy().getBaseVal()));
 			record.endEdit();
 			record.commit(false);
 			monitorModel = true;
@@ -242,9 +206,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		float y = posHandle.getY().getBaseVal().getValue();
 		float width = posHandle.getWidth().getBaseVal().getValue();
 		float height = posHandle.getHeight().getBaseVal().getValue();
-		float rx = posHandle.getRx().getBaseVal().getValue();
-		float ry = posHandle.getRy().getBaseVal().getValue();
-		float hs = Math.max(5, Math.min(width, height) * 0.2f);
 		OMSVGPoint p = svg.createSVGPoint();
 		if (target == posHandle.getElement()) {
 			mode = Mode.POS;
@@ -258,14 +219,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 			p.setX(x + width);
 			p.setY(y + height);
 			mode = Mode.BOTTOM_RIGHT;
-		} else if (target == radiusXHandle.getElement()) {
-			p.setX(x + width - rx);
-			p.setY(y + 0.5f * hs);
-			mode = Mode.RADIUS_X;
-		} else if (target == radiusYHandle.getElement()) {
-			p.setX(x + width - 0.5f * hs);
-			p.setY(y + ry);
-			mode = Mode.RADIUS_Y;
 		}
 		if (mode.consumeEvent()) {
 			delta.substract(p);
@@ -306,18 +259,6 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 						float ymin = Math.max(p.getY(), y);
 						posHandle.getWidth().getBaseVal().setValue(xmin - x);
 						posHandle.getHeight().getBaseVal().setValue(ymin - y);
-					}
-					break;
-				case RADIUS_X:
-					{
-						float rx = Math.min(Math.max(0, x + width - p.getX()), 0.5f * width);
-						posHandle.getRx().getBaseVal().setValue(rx);
-					}
-					break;
-				case RADIUS_Y:
-					{
-						float ry = Math.min(Math.max(0, p.getY() - y), 0.5f * height);
-						posHandle.getRy().getBaseVal().setValue(ry);
 					}
 					break;
 			}

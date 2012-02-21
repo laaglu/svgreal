@@ -37,7 +37,7 @@ public class GenericSectionFactory implements IInspectorSectionFactory {
 	public IInspectorSection createSection(ModelCategory<?> category) {
 		FormPanel formPanel = new FormPanel();
 		formPanel.setLabelAlign(LabelAlign.TOP);
-		FormData formData = new FormData("100%");
+		FormData formData = new FormData("95%");
 		for (IMetadata<?,?> m : category.getMetadata()) {
 			IFieldFactory fieldFactory = m.getFieldFactory();
 			if (fieldFactory != null) {

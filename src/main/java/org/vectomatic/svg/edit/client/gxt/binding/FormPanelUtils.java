@@ -137,7 +137,7 @@ public class FormPanelUtils {
 	public static final IFieldFactory SVGLENGTH_FIELD_FACTORY = new IFieldFactory() {
 		@Override
 		public Component createField(IMetadata<?, ?> metadata) {
-			SVGLengthField field = new SVGLengthField(0f, Float.MAX_VALUE, 1f);
+			SVGLengthField field = new SVGLengthField(-Float.MAX_VALUE, Float.MAX_VALUE, 1f);
 			field.setFieldLabel(Format.capitalize(metadata.getDescription()));
 			field.setName(metadata.getName());
 			return field;

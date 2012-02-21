@@ -48,7 +48,7 @@ public class SVGLengthField extends AdapterField {
 		    valueField = new SpinnerFieldExt();
 		    valueField.setPropertyEditorType(Float.class);
 		    valueField.setAllowDecimals(true);
-		    valueField.setAllowNegative(false);
+		    valueField.setAllowNegative(true);
 		    valueField.setFormat(NumberFormat.getFormat("#0.0"));
 		    valueField.setMinValue(min);
 		    valueField.setMaxValue(max);

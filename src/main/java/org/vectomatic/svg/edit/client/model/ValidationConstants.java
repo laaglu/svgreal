@@ -18,13 +18,13 @@
 package org.vectomatic.svg.edit.client.model;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.i18n.client.Constants;
 
 /**
  * Interface to define text constants used in error validation messages.
  * @author laaglu
  */
-public interface ValidationConstants extends ConstantsWithLookup {
+public interface ValidationConstants extends Constants {
 	public ValidationConstants INSTANCE = GWT.create(ValidationConstants.class);
 
 	/*======================================
