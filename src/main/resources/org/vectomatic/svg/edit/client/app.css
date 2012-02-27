@@ -302,6 +302,30 @@
 	stroke-width:2;
 }
 
+/***************** <image> *****************/
+.image-geometry-manipulator {
+	visibility:visible;
+	stroke:#0000C0;
+}
+.image-geometry-manipulator > rect {
+	fill-opacity:0.2;
+	stroke-dasharray:2,2;
+}
+.image-geometry-manipulator > rect:hover {
+	fill:red;
+}
+.image-geometry-manipulator > g > rect {
+	fill-opacity:0.4;
+}
+.image-geometry-manipulator > g > rect:hover {
+	fill:red;
+}
+.image-geometry-manipulator[accept=yes] {
+	visibility:visible;
+	stroke:#C00000;
+}
+
+
 /***************** Color editor *****************/
 
 @external colorEditor-HSliderBar-shell, colorEditor-HSliderBar-line, colorEditor-HSliderBar-knob, colorEditor-HSliderBar-tick, colorEditor-HSliderBar-label, colorEditor-HSliderBar-shell-focused, colorEditor-HSliderBar-line-sliding;

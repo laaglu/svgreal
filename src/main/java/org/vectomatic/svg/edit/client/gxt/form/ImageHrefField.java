@@ -19,6 +19,7 @@ package org.vectomatic.svg.edit.client.gxt.form;
 
 import org.vectomatic.dnd.DataTransferExt;
 import org.vectomatic.dnd.DropPanel;
+import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.file.ErrorCode;
 import org.vectomatic.file.File;
 import org.vectomatic.file.FileError;
@@ -395,7 +396,7 @@ public class ImageHrefField extends AdapterField implements HasValueChangeHandle
 		 						if (reader.getError() == null) {
 			 						try {
 			 							String result = reader.getStringResult();
-			 							String url = "data:" + type + ";base64," + base64encode(result);
+			 							String url = "data:" + type + ";base64," + DOMHelper.base64encode(result);
 			 							setValue(url, false);
 			 						} catch(Throwable t) {
 			 							reportError(t.getMessage());
@@ -468,10 +469,6 @@ public class ImageHrefField extends AdapterField implements HasValueChangeHandle
 		return value;
 	}
 	
-	private static native String base64encode(String str) /*-{
-		return $wnd.btoa(str);
-	}-*/;
-
 	public String getResourceName() {
 		return ((ImageHrefPanel)widget).getResourceName();
 	}

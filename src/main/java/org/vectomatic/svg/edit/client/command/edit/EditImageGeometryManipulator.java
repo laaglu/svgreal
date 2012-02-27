@@ -17,22 +17,41 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
+import org.vectomatic.dnd.DataTransferExt;
 import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRectElement;
+import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.dom.svg.utils.SVGConstants;
+import org.vectomatic.file.ErrorCode;
+import org.vectomatic.file.File;
+import org.vectomatic.file.FileError;
+import org.vectomatic.file.FileList;
+import org.vectomatic.file.FileReader;
+import org.vectomatic.file.events.LoadEndEvent;
+import org.vectomatic.file.events.LoadEndHandler;
 import org.vectomatic.svg.edit.client.AppBundle;
+import org.vectomatic.svg.edit.client.SvgrealApp;
+import org.vectomatic.svg.edit.client.model.ModelConstants;
 import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGImageElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGLength;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.store.Record;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.DragEnterEvent;
+import com.google.gwt.event.dom.client.DragEnterHandler;
+import com.google.gwt.event.dom.client.DragLeaveEvent;
+import com.google.gwt.event.dom.client.DragLeaveHandler;
+import com.google.gwt.event.dom.client.DragOverEvent;
+import com.google.gwt.event.dom.client.DragOverHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -41,6 +60,9 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  * 2D manipulator class to edit image geometry.
  */
 public class EditImageGeometryManipulator extends EditManipulatorBase {
+	private static final String ATT_ACCEPT = "accept";
+	private static final String ATT_ACCEPT_YES = "yes";
+	private static final String ATT_ACCEPT_NO = "no";
 	protected static enum Mode {
 		PASSIVE {
 			public boolean consumeEvent() { return false; }
@@ -81,6 +103,14 @@ public class EditImageGeometryManipulator extends EditManipulatorBase {
 	 * Vector from the mousedown point to the manipulator handle hotspot
 	 */
 	protected OMSVGPoint delta;
+	/**
+	 * A file reader object
+	 */
+	private FileReader reader;
+	/**
+	 * Url of the dropped file if drag and drop has been used.
+	 */
+	private String resourceName;
 
 	/**
 	 * Constructor
@@ -111,7 +141,7 @@ public class EditImageGeometryManipulator extends EditManipulatorBase {
 		svg = element.getOwnerSVGElement();
 		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
 		g = document.createSVGGElement();
-		g.setClassNameBaseVal(AppBundle.INSTANCE.css().rectGeometryManipulator());
+		g.setClassNameBaseVal(AppBundle.INSTANCE.css().imageGeometryManipulator());
 		posHandle = document.createSVGRectElement();
 		OMSVGGElement handleGroup = document.createSVGGElement();
 		topLeftHandle = document.createSVGRectElement();
@@ -123,8 +153,94 @@ public class EditImageGeometryManipulator extends EditManipulatorBase {
 		monitorModel = true;
 		model.addChangeListener(this);
 		scheduleInit();
+		
+		g.addDragEnterHandler(new DragEnterHandler() {	
+			@Override
+			public void onDragEnter(DragEnterEvent event) {
+				g.getElement().setAttribute(ATT_ACCEPT, ATT_ACCEPT_YES);
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		});
+		g.addDragLeaveHandler(new DragLeaveHandler() {
+			@Override
+			public void onDragLeave(DragLeaveEvent event) {
+				g.getElement().setAttribute(ATT_ACCEPT, ATT_ACCEPT_NO);
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		});
+		g.addDragOverHandler(new DragOverHandler() {
+			@Override
+			public void onDragOver(DragOverEvent event) {
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		});
+		g.addDropHandler(new DropHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				g.getElement().setAttribute(ATT_ACCEPT, ATT_ACCEPT_NO);
+				processFiles(event.getDataTransfer().<DataTransferExt>cast().getFiles());
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		});
+		
 		return g;
 	}
+	
+	public void processFiles(FileList files) {
+		for (File file : files) {
+			final String type = file.getType();
+			if (type.startsWith("image")) {
+				if (reader == null) {
+	 				reader = new FileReader();
+	 				reader.addErrorHandler(new org.vectomatic.file.events.ErrorHandler() {
+						@Override
+						public void onError(org.vectomatic.file.events.ErrorEvent event) {
+							FileError error = reader.getError();
+							String errorDesc = "";
+							if (error != null) {
+								ErrorCode errorCode = error.getCode();
+								if (errorCode != null) {
+									errorDesc = errorCode.name();
+								}
+							}
+							SvgrealApp.getApp().info(ModelConstants.INSTANCE.imageLoadError(), errorDesc);
+						}
+	 				});
+	 				reader.addLoadEndHandler(new LoadEndHandler() {
+	 					
+	 					@Override
+	 					public void onLoadEnd(LoadEndEvent event) {
+	 						if (reader.getError() == null) {
+		 						try {
+		 							String result = reader.getStringResult();
+		 							String url = "data:" + type + ";base64," + DOMHelper.base64encode(result);
+		 							((SVGImageElementModel)record.getModel()).setResourceName(resourceName);
+		 							record.set(SVGConstants.XLINK_HREF_ATTRIBUTE, url);
+		 							record.commit(false);
+		 						} catch(Throwable t) {
+		 							SvgrealApp.getApp().info(ModelConstants.INSTANCE.imageLoadError(), t.getMessage());
+		 						}
+	 						}
+	 					}
+	 				});
+				}
+ 				try {
+ 					reader.readAsBinaryString(file);
+	 				resourceName = file.getName();
+ 				} catch(Throwable t) {
+ 					// mozilla bug 701154: exception should not be thrown here
+ 					// the error handler ought to be invoked instead
+ 					SvgrealApp.getApp().info(ModelConstants.INSTANCE.imageLoadError(), t.getMessage());
+ 				}
+ 				break;
+			}
+		}
+	}
+
 	
 	/**
 	 * Detaches this manipulator from the DOM tree

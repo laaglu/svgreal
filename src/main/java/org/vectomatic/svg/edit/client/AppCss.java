@@ -58,6 +58,8 @@ public interface AppCss extends CssResource {
 	public String lineGeometryManipulator();
 	@ClassName("path-geometry-manipulator")
 	public String pathGeometryManipulator();
+	@ClassName("image-geometry-manipulator")
+	public String imageGeometryManipulator();
 	
 	////////////////////////////////////////
 	// Dash-array editor

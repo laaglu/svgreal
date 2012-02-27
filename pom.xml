@@ -35,12 +35,12 @@
 		<dependency>
 			<groupId>org.vectomatic</groupId>
 			<artifactId>lib-gwt-svg</artifactId>
-			<version>0.5.5</version>
+			<version>0.5.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.vectomatic</groupId>
 			<artifactId>lib-gwt-file</artifactId>
-			<version>0.3</version>
+			<version>0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google</groupId>
@@ -100,7 +100,9 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<google.webtoolkit.home>/home/laaglu/gwt/2.4.0</google.webtoolkit.home>
+		<gwt.module>org.vectomatic.svg.edit.svgreal</gwt.module>
+ 		<gwt.style>OBF</gwt.style>
+ 		<gwt.logLevel>WARN</gwt.logLevel>
 	</properties>
 	
 	<build>
@@ -152,13 +154,11 @@
 						<id>gwt compilation</id>
 						<configuration>
 							<modules>
-								<module>org.vectomatic.svg.edit.svgreal</module>
+								<module>${gwt.module}</module>
 							</modules>
 							<style>${gwt.style}</style>
-							<!-- <style>OBF</style>-->
 							<logLevel>${gwt.logLevel}</logLevel>
 							<extraJvmArgs>-Xmx512m</extraJvmArgs>
-							<localWorkers>${gwt.localWorkers}</localWorkers>
 							<gen>${project.build.directory}/gen</gen>
 							<extra>${project.build.directory}/aux</extra>
 						</configuration>
@@ -228,37 +228,54 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<distributionManagement>
+		<downloadUrl>http://www.vectomatic.org/apps/svgreal</downloadUrl>
+	</distributionManagement>
 	<profiles>
-		<!-- There are two build profiles: development and production
-		+ by default, the production profile is assumed
-		  It builds all GWT permutations and generates reports for the website
-		+ Use the '-P development' mvn flag, or within eclipse, set the
-		  Project > Properties > Maven > Active Maven Profiles to 'development'
-		  to activate the development profile
-		 -->
+		<!-- ==========================================
+		 Profiles to manage the choice of permutations:
+		 perm-ff: build only the firefox permutation 
+		 ==============================================-->
 		<profile>
-			<id>development</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
+			<id>perm-ff</id>
 			<properties>
- 				<!-- Build options for development mode -->
+				<gwt.module>org.vectomatic.svg.edit.svgrealff</gwt.module>
+	   		</properties>
+		</profile>
+		
+		<!-- ==========================================
+		 Profiles to manage the build-style:
+		 build-detailed: build with detailed symbols
+		 ==============================================-->
+		<profile>
+			<id>build-detailed</id>
+			<properties>
     			<gwt.style>DETAILED</gwt.style>
-    			<gwt.logLevel>WARN</gwt.logLevel>
-    			<gwt.localWorkers>1</gwt.localWorkers>
+    			<gwt.logLevel>INFO</gwt.logLevel>
     		</properties>
 		</profile>
+		
+		<!-- ==========================================
+		 Profiles to deploy to your own environment. Define
+		 the associated properties in your settings.xml to
+		 describe the server you want to deploy to.
+		 ==============================================-->
 		<profile>
-			<id>production</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
- 				<!-- Build options for production mode -->
-    			<gwt.style>OBF</gwt.style>
-    			<gwt.logLevel>INFO</gwt.logLevel>
-    			<gwt.localWorkers>2</gwt.localWorkers>
-    		</properties>
+			<id>deployment-local</id>
+			<distributionManagement>
+				<repository>
+					<id>${vectomatic.release.id}</id>
+					<url>${vectomatic.release.url}</url>
+				</repository>
+				<snapshotRepository>
+					<id>${vectomatic.snapshots.id}</id>
+					<url>${vectomatic.snapshots.url}</url>
+				</snapshotRepository>
+				<site>
+					<id>${vectomatic.site.id}</id>
+					<url>${vectomatic.site.url}</url>
+				</site>
+			</distributionManagement>
 		</profile>
 	</profiles>
 </project>
