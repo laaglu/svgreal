@@ -18,6 +18,7 @@
 package org.vectomatic.svg.edit.client.model.svg;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +50,6 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.TreeModel;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.Store;
-import com.google.gwt.core.client.GWT;
 
 /**
  * Base model class for svg elements.
@@ -624,6 +624,15 @@ public abstract class SVGElementModel extends AbstractModel<SVGElement> implemen
 			}
 		}
 		return errors;
+	}
+	
+	/**
+	 * Adds the ids of all elements referred to by this element
+	 * to the specified collection of referenced ids.
+	 * @param refs
+	 * A collection of referenced ids.
+	 */
+	public void getReferences(Collection<String> refs) {
 	}
 
 }

@@ -18,12 +18,14 @@
 package org.vectomatic.svg.edit.client.model.svg;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.vectomatic.dom.svg.OMSVGLength;
 import org.vectomatic.dom.svg.impl.SVGElement;
 import org.vectomatic.dom.svg.impl.SVGImageElement;
 import org.vectomatic.dom.svg.impl.SVGRectElement;
+import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
 import org.vectomatic.svg.edit.client.command.EditGeometryCommandFactory;
@@ -188,5 +190,13 @@ public class SVGImageElementModel extends SVGNamedElementModel {
 			
 		}
 		return metaModel;
+	}
+
+	@Override
+	public void getReferences(Collection<String> refs) {
+		String href = DOMHelper.getAttributeNS(element, SVGConstants.XLINK_NAMESPACE_URI, SVGConstants.XLINK_HREF_ATTRIBUTE);
+		if (href != null && href.length() > 0) {
+			refs.add(href);
+		}
 	}
 }

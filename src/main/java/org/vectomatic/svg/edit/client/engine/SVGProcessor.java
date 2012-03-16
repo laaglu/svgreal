@@ -19,6 +19,7 @@ package org.vectomatic.svg.edit.client.engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -151,6 +152,50 @@ public class SVGProcessor {
 	
 	/*==========================================================
 	 * 
+	 * I D   R E F E R E N C E S   M A N A G E M E N T 
+	 * 
+	 *==========================================================*/
+	
+	static Set<String> IDREF_ATTS = new HashSet<String>(Arrays.asList(
+			new String[] { "clip-path",
+			 "mask",
+			 "marker-start",
+			 "marker-mid",
+			 "marker-end",
+			 "fill",
+			 "stroke",
+			 "filter",
+			 "cursor",
+			 "style"}));
+	static IdRefTokenizer TOKENIZER = GWT.create(IdRefTokenizer.class);
+
+	/**
+	 * Adds the ids of all elements referred to by the specified element
+	 * to the specified collection of referenced ids.
+	 * @param element
+	 * The element to analyze
+	 * @param refs
+	 * A collection of referenced ids.
+	 */
+	public static void getIdReferences(Collection<String> refs, Element element) {
+		NamedNodeMap<Attr> attrs = DOMHelper.getAttributes(element);
+		for (int i = 0, length = attrs.getLength(); i < length; i++) {
+			Attr attr = attrs.item(i);
+			if (IDREF_ATTS.contains(attr.getName())) {
+				TOKENIZER.tokenize(attr.getValue());
+				IdRefTokenizer.IdRefToken token;
+				while ((token = TOKENIZER.nextToken()) != null) {
+					if (token.getKind() == IdRefTokenizer.IdRefToken.IDREF) {
+						refs.add(token.getValue());
+					}
+				}
+			}
+		}
+	}
+
+
+	/*==========================================================
+	 * 
 	 * M U L T I D O C U M E N T   M A N A G E M E N T 
 	 * 
 	 *==========================================================*/
@@ -211,7 +256,6 @@ public class SVGProcessor {
 		// Collect all the original element ids and replace them with a
 		// normalized id
 		int idIndex = 0;
-		Map<String, Element> idToElement = new HashMap<String, Element>();
 		Map<String, String> idToNormalizedId = new HashMap<String, String>();
 		List<Element> queue = new ArrayList<Element>();
 		queue.add(srcSvg.getElement());
@@ -219,7 +263,6 @@ public class SVGProcessor {
 			Element element = queue.remove(0);
 			String id = element.getId();
 			if (id != null) {
-				idToElement.put(id, element);
 				String normalizedId = makeId(idPrefix, Integer.toString(idIndex++));
 				idToNormalizedId.put(id, normalizedId);
 				element.setId(normalizedId);
@@ -234,19 +277,7 @@ public class SVGProcessor {
 		}
 		
 		// Change all the attributes which are URI references
-		Set<String> attNames = new HashSet<String>(Arrays.asList(
-			new String[] { "clip-path",
-			 "mask",
-			 "marker-start",
-			 "marker-mid",
-			 "marker-end",
-			 "fill",
-			 "stroke",
-			 "filter",
-			 "cursor",
-			 "style"}));
 		queue.add(srcSvg.getElement());
-		IdRefTokenizer tokenizer = GWT.create(IdRefTokenizer.class);
 		while (queue.size() > 0) {
 			Element element = queue.remove(0);
 			if (DOMHelper.hasAttributeNS(element, SVGConstants.XLINK_NAMESPACE_URI, SVGConstants.XLINK_HREF_ATTRIBUTE)) {
@@ -262,11 +293,11 @@ public class SVGProcessor {
 			NamedNodeMap<Attr> attrs = DOMHelper.getAttributes(element);
 			for (int i = 0, length = attrs.getLength(); i < length; i++) {
 				Attr attr = attrs.item(i);
-				if (attNames.contains(attr.getName())) {
+				if (IDREF_ATTS.contains(attr.getName())) {
 					StringBuilder builder = new StringBuilder();
-					tokenizer.tokenize(attr.getValue());
+					TOKENIZER.tokenize(attr.getValue());
 					IdRefTokenizer.IdRefToken token;
-					while ((token = tokenizer.nextToken()) != null) {
+					while ((token = TOKENIZER.nextToken()) != null) {
 						String value = token.getValue();
 						if (token.getKind() == IdRefTokenizer.IdRefToken.DATA) {
 							builder.append(value);

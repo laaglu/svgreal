@@ -17,6 +17,7 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.model.svg;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
 import org.vectomatic.svg.edit.client.command.GenericEditCommandFactory;
 import org.vectomatic.svg.edit.client.engine.SVGModel;
+import org.vectomatic.svg.edit.client.engine.SVGProcessor;
 import org.vectomatic.svg.edit.client.gxt.binding.FormPanelUtils;
 import org.vectomatic.svg.edit.client.gxt.binding.FormPanelUtils.SvgLengthFieldFactory;
 import org.vectomatic.svg.edit.client.inspector.GenericSectionFactory;
@@ -52,6 +54,23 @@ import com.google.gwt.resources.client.ImageResource;
 public abstract class SVGStyledElementModel extends SVGNamedElementModel {
 	private static Map<String, MetadataBase<?, SVGElement>> nameToCategory;
 	private static ModelCategory<SVGElement> strokeFillCategory;
+	
+	// TODO: ensure paint uris are valid
+	private static class PaintValidator implements IValidator<OMSVGPaint, SVGElement> {
+		@Override
+		public ValidationError validate(SVGElement model, OMSVGPaint value) {
+			switch(value.getPaintType()) {
+				case OMSVGPaint.SVG_PAINTTYPE_URI_NONE:
+				case OMSVGPaint.SVG_PAINTTYPE_URI_CURRENTCOLOR:
+				case OMSVGPaint.SVG_PAINTTYPE_URI_RGBCOLOR:
+				case OMSVGPaint.SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR:
+				case OMSVGPaint.SVG_PAINTTYPE_URI:
+					String uri = value.getUri();
+					break;
+			}
+			return null;
+		}
+	}
 
 	public SVGStyledElementModel(SVGModel owner, SVGElement element, SVGElement twin) {
 		super(owner, element, twin);
@@ -251,4 +270,10 @@ public abstract class SVGStyledElementModel extends SVGNamedElementModel {
 		}
 		return strokeFillCategory;
 	}
+	
+	@Override
+	public void getReferences(Collection<String> refs) {
+		SVGProcessor.getIdReferences(refs, element);
+	}
+
 }
