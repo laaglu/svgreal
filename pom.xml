@@ -18,9 +18,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>http://code.google.com/p/svgreal/source/browse/#svn/trunk</url>
-		<connection>scm:svn:http://svgreal.googlecode.com/svn/svgreal/trunk</connection>
-		<developerConnection>scm:svn:file:///home/laaglu/svn/svgrealpub/svgreal/trunk</developerConnection>
+		<url>scm:git:git@github.com:laaglu/svgreal.git</url>
+		<connection>scm:git:git@github.com:laaglu/svgreal.git</connection>
+		<developerConnection>scm:git:git@github.com:laaglu/svgreal.git</developerConnection>
 	</scm>
 	<dependencies>
 		<dependency>
