@@ -68,6 +68,9 @@ public interface ModelConstants extends Constants {
 	public String pathD();
 
 	public String imageHref();
+	
+	public String useX();
+	public String useY();
 
 	/*======================================
 	 = Global category property names

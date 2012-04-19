@@ -78,6 +78,7 @@ import org.vectomatic.svg.edit.client.model.svg.SVGPathElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPolygonElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPolylineElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGRectElementModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGUseElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGViewBoxElementModel;
 
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -267,6 +268,7 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 			tagNameToMetamodel.put(SVGConstants.SVG_POLYLINE_TAG, SVGPolylineElementModel.getPolylineElementMetaModel());
 			tagNameToMetamodel.put(SVGConstants.SVG_PATH_TAG, SVGPathElementModel.getPathElementMetaModel());
 			tagNameToMetamodel.put(SVGConstants.SVG_IMAGE_TAG, SVGImageElementModel.getImageElementMetaModel());
+			tagNameToMetamodel.put(SVGConstants.SVG_USE_TAG, SVGUseElementModel.getUseElementMetaModel());
 		}
 		return tagNameToMetamodel.get(element.getTagName());
 	}
@@ -283,6 +285,7 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 		$wnd.otToModel["SVGPolylineElement"] = function(owner, elem, twin) { return @org.vectomatic.svg.edit.client.model.svg.SVGPolylineElementModel::new(Lorg/vectomatic/svg/edit/client/engine/SVGModel;Lorg/vectomatic/dom/svg/impl/SVGPolylineElement;Lorg/vectomatic/dom/svg/impl/SVGPolylineElement;)(owner, elem, twin); };
 		$wnd.otToModel["SVGPathElement"] = function(owner, elem, twin) { return @org.vectomatic.svg.edit.client.model.svg.SVGPathElementModel::new(Lorg/vectomatic/svg/edit/client/engine/SVGModel;Lorg/vectomatic/dom/svg/impl/SVGPathElement;Lorg/vectomatic/dom/svg/impl/SVGPathElement;)(owner, elem, twin); };
 		$wnd.otToModel["SVGImageElement"] = function(owner, elem, twin) { return @org.vectomatic.svg.edit.client.model.svg.SVGImageElementModel::new(Lorg/vectomatic/svg/edit/client/engine/SVGModel;Lorg/vectomatic/dom/svg/impl/SVGImageElement;Lorg/vectomatic/dom/svg/impl/SVGImageElement;)(owner, elem, twin); };
+		$wnd.otToModel["SVGUseElement"] = function(owner, elem, twin) { return @org.vectomatic.svg.edit.client.model.svg.SVGUseElementModel::new(Lorg/vectomatic/svg/edit/client/engine/SVGModel;Lorg/vectomatic/dom/svg/impl/SVGUseElement;Lorg/vectomatic/dom/svg/impl/SVGUseElement;)(owner, elem, twin); };
 	}-*/;
 	
 	/**
