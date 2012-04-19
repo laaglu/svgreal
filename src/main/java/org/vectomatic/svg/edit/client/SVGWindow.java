@@ -152,7 +152,6 @@ public class SVGWindow extends Window {
 		this.svgModel = svgModel;
 		setPlain(true);
 		setMaximizable(true);
-		setSize(500, 300);
 		setMinWidth(200);
 		setMinHeight(170);
 		

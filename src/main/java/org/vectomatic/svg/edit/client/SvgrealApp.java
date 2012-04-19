@@ -184,7 +184,11 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 	private DecoratedImageCache imageCache;
 	
 	private List<MetaModel<?>> metaModels;
-	private int windowX, windowY;
+	/**
+	 * The "slot" into which the next new window
+	 * will be positionned
+	 */
+	private int windowSlot;
 	private ViewportExt viewport;
 	private Menu recentDocsMenu;
 	private MenuItem resetViewItem;
@@ -629,11 +633,7 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 			}
 		}
 
-		
-		int windowBarHeight = getWindowBarHeight();
-		windowY += windowBarHeight;
-		window.setPagePosition(windowX, windowY);
-		windowX += windowBarHeight;
+		slotWindow(window);
 //		window.show();
 		viewport.add(window);
 		window.setVisible(true);
@@ -728,25 +728,32 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 	}
 	public void stackWindows() {
 		GWT.log("stackWindows()");
-		List<Window> windows = getAllWindows();
-		Rectangle rect = getRectangle();
-		Size size = viewport.getSize();
-		Size windowSize = new Size((int)(size.width * 0.75f), (int)(size.height * 0.75f));
-		int windowBarHeight = getWindowBarHeight();
-		int index = 0;
-		for (Window window : windows) {
-			window.setSize(windowSize.width, windowSize.height);
-			int x = rect.x + index * windowBarHeight;
-			int y = rect.y + index * windowBarHeight;
-			window.setPagePosition(x, y);
-			index++;
-			if (y + windowSize.height > size.height) {
-				x = rect.x;
-				y = rect.y;
-				index = 0;
-			}
+		windowSlot = 0;
+		for (Window window : getAllWindows()) {
+			slotWindow(window);
 		}
 	}
+	
+	/**
+	 * Positions a window on the next available graphical "slot"
+	 * @param window the window to position
+	 */
+	public void slotWindow(Window window) {
+		Rectangle rect = getRectangle();
+		Size windowSize = new Size((int)(rect.width * 0.8f), (int)(rect.height * 0.8f));
+		int windowBarHeight = getWindowBarHeight();
+		window.setSize(windowSize.width, windowSize.height);
+		int x = rect.x + windowSlot * windowBarHeight;
+		int y = rect.y + windowSlot * windowBarHeight;
+		window.setPagePosition(x, y);
+		windowSlot++;
+		if (x + windowSize.width > rect.x + rect.width || y + windowSize.height > rect.y + rect.height) {
+			x = rect.x;
+			y = rect.y;
+			windowSlot = 0;
+		}
+	}
+	
 	public void closeWindow(SVGWindow window) {
 		GWT.log("closeWindow()");
 		if (window != null) {
