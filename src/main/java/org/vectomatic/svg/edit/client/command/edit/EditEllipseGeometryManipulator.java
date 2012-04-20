@@ -17,7 +17,6 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGEllipseElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
@@ -108,15 +107,13 @@ public class EditEllipseGeometryManipulator extends EditManipulatorBase {
 		//   <rect/>   cy
 		//  </g>
 		// </g>
-		OMSVGEllipseElement ellipse = (OMSVGEllipseElement) model.getElementWrapper();
-		svg = ellipse.getOwnerSVGElement();
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-		g = document.createSVGGElement();
+		svg = model.getOwner().getSvgElement();
+		g = new OMSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().ellipseGeometryManipulator());
-		posHandle = document.createSVGEllipseElement();
-		OMSVGGElement handleGroup = document.createSVGGElement();
-		rxHandle = document.createSVGRectElement();
-		ryHandle = document.createSVGRectElement();
+		posHandle = new OMSVGEllipseElement();
+		OMSVGGElement handleGroup = new OMSVGGElement();
+		rxHandle = new OMSVGRectElement();
+		ryHandle = new OMSVGRectElement();
 		g.appendChild(posHandle);
 		g.appendChild(handleGroup);
 		handleGroup.appendChild(rxHandle);

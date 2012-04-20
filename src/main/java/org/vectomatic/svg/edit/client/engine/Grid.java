@@ -241,9 +241,9 @@ public class Grid {
 	public void attach(SVGModel svgModel) {
 		this.svgModel = svgModel;
 		AppCss css = AppBundle.INSTANCE.css();
-		OMSVGSVGElement svg = svgModel.getDocumentRoot();
+		OMSVGSVGElement svg = svgModel.getSvgElement();
 		OMSVGDocument doc = (OMSVGDocument) svg.getOwnerDocument();
-		String modelId = svgModel.getDocumentRoot().getId();
+		String modelId = svg.getId();
 		
 		// Build the grid pattern
 		dx = dy = 5;

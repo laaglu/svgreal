@@ -71,6 +71,8 @@ public interface ModelConstants extends Constants {
 	
 	public String useX();
 	public String useY();
+	public String useWidth();
+	public String useHeight();
 
 	/*======================================
 	 = Global category property names

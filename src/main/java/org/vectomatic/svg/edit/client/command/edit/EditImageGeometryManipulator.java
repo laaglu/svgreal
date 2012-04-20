@@ -18,7 +18,6 @@
 package org.vectomatic.svg.edit.client.command.edit;
 
 import org.vectomatic.dnd.DataTransferExt;
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
@@ -137,15 +136,13 @@ public class EditImageGeometryManipulator extends EditManipulatorBase {
 		//   <rect/>   bottom-right corner
 		//  </g>
 		// </g>
-		OMSVGElement element = model.getElementWrapper();
-		svg = element.getOwnerSVGElement();
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-		g = document.createSVGGElement();
+		svg = model.getOwner().getSvgElement();
+		g = new OMSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().imageGeometryManipulator());
-		posHandle = document.createSVGRectElement();
-		OMSVGGElement handleGroup = document.createSVGGElement();
-		topLeftHandle = document.createSVGRectElement();
-		bottomRightHandle = document.createSVGRectElement();
+		posHandle = new OMSVGRectElement();
+		OMSVGGElement handleGroup = new OMSVGGElement();
+		topLeftHandle = new OMSVGRectElement();
+		bottomRightHandle = new OMSVGRectElement();
 		g.appendChild(posHandle);
 		g.appendChild(handleGroup);
 		handleGroup.appendChild(topLeftHandle);

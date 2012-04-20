@@ -26,13 +26,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.vectomatic.dom.svg.OMNode;
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGLineElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGPointList;
+import org.vectomatic.dom.svg.OMSVGPolygonElement;
 import org.vectomatic.dom.svg.OMSVGPolylineElement;
 import org.vectomatic.dom.svg.OMSVGRectElement;
 import org.vectomatic.dom.svg.impl.SVGElement;
@@ -173,14 +173,13 @@ public class EditSVGPointsManipulator extends EditManipulatorBase implements Sel
 		//  </g>
 		// </g>
 		OMSVGElement element = model.getElementWrapper();
-		svg = element.getOwnerSVGElement();
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-		g = document.createSVGGElement();
+		svg = model.getOwner().getSvgElement();
+		g = new OMSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().animatedPointsGeometryManipulator());
-		posHandle = (element instanceof OMSVGPolylineElement) ? document.createSVGPolylineElement() : document.createSVGPolygonElement();
-		lHandleGroup = document.createSVGGElement();
+		posHandle = (element instanceof OMSVGPolylineElement) ? new OMSVGPolylineElement() : new OMSVGPolygonElement();
+		lHandleGroup = new OMSVGGElement();
 
-		vHandleGroup = document.createSVGGElement();
+		vHandleGroup = new OMSVGGElement();
 		g.appendChild((OMSVGElement)posHandle);
 		g.appendChild(lHandleGroup);
 		g.appendChild(vHandleGroup);
@@ -236,12 +235,11 @@ public class EditSVGPointsManipulator extends EditManipulatorBase implements Sel
 			SVGAnimatedPointsModelBase model = (SVGAnimatedPointsModelBase) record.getModel();
 			OMSVGElement element = model.getElementWrapper();
 			super.modelChanged(event);
-			OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
 			SVGPointsStore store = model.getPointsStore();
 			
 			// Create the polygonal translate handle
 			boolean isPolyline = (element instanceof OMSVGPolylineElement);
-			OMSVGElement posHandle = isPolyline ? document.createSVGPolylineElement() : document.createSVGPolygonElement();
+			OMSVGElement posHandle = isPolyline ? new OMSVGPolylineElement() : new OMSVGPolygonElement();
 			posHandle.setAttribute(SVGConstants.SVG_POINTS_ATTRIBUTE, element.getAttribute(SVGConstants.SVG_POINTS_ATTRIBUTE));
 			OMSVGPointList posHandlePoints = ((ISVGAnimatedPoints)posHandle).getPoints();
 
@@ -254,11 +252,11 @@ public class EditSVGPointsManipulator extends EditManipulatorBase implements Sel
 			}
 			
 			// Create the line handles
-			OMSVGGElement lHandleGroup = document.createSVGGElement();
+			OMSVGGElement lHandleGroup = new OMSVGGElement();
 			for (int i = 0, count = posHandlePoints.getNumberOfItems() - (isPolyline ? 1 : 0); i < count; i++) {
 				OMSVGPoint q1 = posHandlePoints.getItem(i);
 				OMSVGPoint q2 = posHandlePoints.getItem((i + 1) % (isPolyline ? (count + 1) : count));
-				OMSVGLineElement line = document.createSVGLineElement();
+				OMSVGLineElement line = new OMSVGLineElement();
 				lHandleGroup.appendChild(line);
 				lineTo1stPoint.put((SVGLineElement)line.getElement().cast(), q1);
 				lineTo2ndPoint.put((SVGLineElement)line.getElement().cast(), q2);
@@ -267,10 +265,10 @@ public class EditSVGPointsManipulator extends EditManipulatorBase implements Sel
 			}
 
 			// Create the vertex handles
-			OMSVGGElement vHandleGroup = document.createSVGGElement();
+			OMSVGGElement vHandleGroup = new OMSVGGElement();
 			for (int i = 0, count = posHandlePoints.getNumberOfItems(); i < count; i++) {
 				OMSVGPoint q = posHandlePoints.getItem(i);
-				OMSVGRectElement vertex = document.createSVGRectElement();
+				OMSVGRectElement vertex = new OMSVGRectElement();
 				vertexToPoint.put((SVGRectElement)vertex.getElement().cast(), q);
 				pointToVertex.put(q, (SVGRectElement)vertex.getElement().cast());
 				vHandleGroup.appendChild(vertex);

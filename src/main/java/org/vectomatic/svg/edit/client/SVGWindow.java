@@ -214,7 +214,7 @@ public class SVGWindow extends Window {
 		svgContainer.setContextMenu(contextMenu);
 	    svgContainer.setScrollMode(Style.Scroll.AUTO);
 	    svgContainer.setStyleAttribute("background-color", SVGConstants.CSS_WHITE_VALUE);
-	    OMSVGSVGElement svg = svgModel.getDocumentRoot();
+	    OMSVGSVGElement svg = svgModel.getSvgElement();
 	    SVGImage image = new SVGImage(svg) {
 	    	protected void onAttach() {
 	    		GWT.log("onAttach");

@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.vectomatic.dom.svg.OMElement;
 import org.vectomatic.dom.svg.OMSVGDocument;
+import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
@@ -37,6 +39,7 @@ import org.vectomatic.dom.svg.impl.SVGRectElement;
 import org.vectomatic.dom.svg.itf.ISVGLocatable;
 import org.vectomatic.dom.svg.itf.ISVGTransformable;
 import org.vectomatic.dom.svg.utils.DOMHelper;
+import org.vectomatic.dom.svg.utils.OMSVGParser;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.dom.svg.utils.SVGPrefixResolver;
 import org.vectomatic.svg.edit.client.SVGSelectionModel;
@@ -665,14 +668,6 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 	}
 
 	/**
-	 * Returns the root of the SVG document.
-	 * @return the root of the SVG document.
-	 */
-	public OMSVGSVGElement getDocumentRoot() {
-		return svg;
-	}
-
-	/**
 	 * Returns the selection model.
 	 * @return the selection model.
 	 */
@@ -1100,5 +1095,20 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 		}
 		tagNameToTagCount.put(name, count + 1);
 		return name + (count + 1);
+	}
+	
+	/*==========================================================
+	 * 
+	 * R E F E R E N C E   S O L V I N G
+	 * 
+	 *==========================================================*/
+	
+	public OMSVGElement dereference(String idref) {
+		if (idref.startsWith("#")) {
+			idref = idref.substring(1);
+		} else if (idref.startsWith("url(#")) {
+			idref = idref.substring(5, idref.length() - 1);
+		}
+		return OMSVGParser.currentDocument().getElementById(idref);
 	}
 }

@@ -18,7 +18,6 @@
 package org.vectomatic.svg.edit.client.command.edit;
 
 import org.vectomatic.dom.svg.OMSVGCircleElement;
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
@@ -123,17 +122,15 @@ public class EditRectGeometryManipulator extends EditManipulatorBase {
 		//   <circle/> ry handle
 		//  </g>
 		// </g>
-		OMSVGRectElement rect = (OMSVGRectElement) model.getElementWrapper();
-		svg = rect.getOwnerSVGElement();
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-		g = document.createSVGGElement();
+		svg = model.getOwner().getSvgElement();
+		g = new OMSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().rectGeometryManipulator());
-		posHandle = document.createSVGRectElement();
-		OMSVGGElement handleGroup = document.createSVGGElement();
-		topLeftHandle = document.createSVGRectElement();
-		bottomRightHandle = document.createSVGRectElement();
-		radiusXHandle = document.createSVGCircleElement();
-		radiusYHandle = document.createSVGCircleElement();
+		posHandle = new OMSVGRectElement();
+		OMSVGGElement handleGroup = new OMSVGGElement();
+		topLeftHandle = new OMSVGRectElement();
+		bottomRightHandle = new OMSVGRectElement();
+		radiusXHandle = new OMSVGCircleElement();
+		radiusYHandle = new OMSVGCircleElement();
 		g.appendChild(posHandle);
 		g.appendChild(handleGroup);
 		handleGroup.appendChild(topLeftHandle);

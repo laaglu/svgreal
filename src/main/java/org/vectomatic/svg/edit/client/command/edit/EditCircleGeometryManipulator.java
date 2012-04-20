@@ -18,7 +18,6 @@
 package org.vectomatic.svg.edit.client.command.edit;
 
 import org.vectomatic.dom.svg.OMSVGCircleElement;
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
@@ -101,14 +100,12 @@ public class EditCircleGeometryManipulator extends EditManipulatorBase {
 			//   <circle/>   r
 			//  </g>
 			// </g>
-			OMSVGCircleElement circle = (OMSVGCircleElement) model.getElementWrapper();
-			svg = circle.getOwnerSVGElement();
-			OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-			g = document.createSVGGElement();
+			svg = model.getOwner().getSvgElement();
+			g = new OMSVGGElement();
 			g.setClassNameBaseVal(AppBundle.INSTANCE.css().circleGeometryManipulator());
-			posHandle = document.createSVGCircleElement();
-			OMSVGGElement handleGroup = document.createSVGGElement();
-			rHandle = document.createSVGCircleElement();
+			posHandle = new OMSVGCircleElement();
+			OMSVGGElement handleGroup = new OMSVGGElement();
+			rHandle = new OMSVGCircleElement();
 			g.appendChild(posHandle);
 			g.appendChild(handleGroup);
 			handleGroup.appendChild(rHandle);

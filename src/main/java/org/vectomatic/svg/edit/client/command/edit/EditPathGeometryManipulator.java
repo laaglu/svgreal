@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
@@ -144,16 +143,14 @@ public class EditPathGeometryManipulator extends EditManipulatorBase implements 
 		this.record = record;
 		SVGPathElementModel model = (SVGPathElementModel) record.getModel();
 		scalingHandlerReg = model.getOwner().addScalingHandler(this);
-		OMSVGElement element = model.getElementWrapper();
-		svg = element.getOwnerSVGElement();
+		svg = model.getOwner().getSvgElement();
 
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-		path = document.createSVGPathElement();
-		g = document.createSVGGElement();
+		path = new OMSVGPathElement();
+		g = new OMSVGGElement();
 		Mode.VERTEX.write(g);
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().pathGeometryManipulator());
-		tangentGroup = document.createSVGGElement();
-		vertexGroup = document.createSVGGElement();
+		tangentGroup = new OMSVGGElement();
+		vertexGroup = new OMSVGGElement();
 		g.appendChild(path);
 		g.appendChild(tangentGroup);
 		g.appendChild(vertexGroup);

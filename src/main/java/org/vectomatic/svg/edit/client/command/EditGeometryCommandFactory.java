@@ -17,10 +17,10 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.vectomatic.dom.svg.impl.SVGElement;
 import org.vectomatic.svg.edit.client.command.edit.EditCircleGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditEllipseGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditImageGeometryManipulator;
@@ -29,6 +29,7 @@ import org.vectomatic.svg.edit.client.command.edit.EditManipulatorBase;
 import org.vectomatic.svg.edit.client.command.edit.EditPathGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditRectGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditSVGPointsManipulator;
+import org.vectomatic.svg.edit.client.command.edit.EditUseGeometryManipulator;
 import org.vectomatic.svg.edit.client.command.edit.EditViewBoxGeometryManipulator;
 import org.vectomatic.svg.edit.client.model.MetaModel;
 import org.vectomatic.svg.edit.client.model.ModelCategory;
@@ -42,6 +43,7 @@ import org.vectomatic.svg.edit.client.model.svg.SVGPathElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPolygonElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGPolylineElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGRectElementModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGUseElementModel;
 import org.vectomatic.svg.edit.client.model.svg.SVGViewBoxElementModel;
 
 /**
@@ -56,7 +58,7 @@ public class EditGeometryCommandFactory extends ManipulatorCommandFactoryBase {
 			return new EditGeometryCommandFactory();
 		}
 	};
-//	protected static Map<MetaModel, EditManipulatorBase> metaModelToManipulator;
+	protected static Map<MetaModel<?>, EditManipulatorBase> metaModelToManipulator;
 	
 	public EditGeometryCommandFactory() {
 		ModelConstants constants = ModelConstants.INSTANCE;
@@ -82,49 +84,22 @@ public class EditGeometryCommandFactory extends ManipulatorCommandFactoryBase {
 	
 	@Override
 	protected EditManipulatorBase getManipulator(SVGElementModel model) {
-//		if (metaModelToManipulator == null) {
-//			metaModelToManipulator = new HashMap<MetaModel, EditManipulatorBase>();
-//			metaModelToManipulator.put(SVGLineElementModel.getLineElementMetaModel(), new EditLineGeometryManipulator());
-//			metaModelToManipulator.put(SVGCircleElementModel.getCircleElementMetaModel(), new EditCircleGeometryManipulator());
-//			metaModelToManipulator.put(SVGEllipseElementModel.getEllipseElementMetaModel(), new EditEllipseGeometryManipulator());
-//			metaModelToManipulator.put(SVGRectElementModel.getRectElementMetaModel(), new EditRectGeometryManipulator());
-//			metaModelToManipulator.put(SVGPolygonElementModel.getPolygonElementMetaModel(), new EditSVGPointsManipulator());
-//			metaModelToManipulator.put(SVGPolylineElementModel.getPolylineElementMetaModel(), new EditSVGPointsManipulator());
-//			metaModelToManipulator.put(SVGViewBoxElementModel.getViewBoxElementMetaModel(), new EditViewBoxGeometryManipulator());
-//			metaModelToManipulator.put(SVGPathElementModel.getPathElementMetaModel(), new EditPathGeometryManipulator());
-//		}
-//		MetaModel metaModel = model.getMetaModel();
-//		assert(metaModel != null);
-//		return metaModelToManipulator.get(metaModel);
-		
-		MetaModel<SVGElement> metaModel = model.getMetaModel();
-		if (metaModel == SVGLineElementModel.getLineElementMetaModel()) {
-			return new EditLineGeometryManipulator();
+		if (metaModelToManipulator == null) {
+			metaModelToManipulator = new HashMap<MetaModel<?>, EditManipulatorBase>();
+			metaModelToManipulator.put(SVGLineElementModel.getLineElementMetaModel(), new EditLineGeometryManipulator());
+			metaModelToManipulator.put(SVGCircleElementModel.getCircleElementMetaModel(), new EditCircleGeometryManipulator());
+			metaModelToManipulator.put(SVGEllipseElementModel.getEllipseElementMetaModel(), new EditEllipseGeometryManipulator());
+			metaModelToManipulator.put(SVGRectElementModel.getRectElementMetaModel(), new EditRectGeometryManipulator());
+			metaModelToManipulator.put(SVGPolygonElementModel.getPolygonElementMetaModel(), new EditSVGPointsManipulator());
+			metaModelToManipulator.put(SVGPolylineElementModel.getPolylineElementMetaModel(), new EditSVGPointsManipulator());
+			metaModelToManipulator.put(SVGViewBoxElementModel.getViewBoxElementMetaModel(), new EditViewBoxGeometryManipulator());
+			metaModelToManipulator.put(SVGPathElementModel.getPathElementMetaModel(), new EditPathGeometryManipulator());
+			metaModelToManipulator.put(SVGPathElementModel.getPathElementMetaModel(), new EditPathGeometryManipulator());
+			metaModelToManipulator.put(SVGImageElementModel.getImageElementMetaModel(), new EditImageGeometryManipulator());
+			metaModelToManipulator.put(SVGUseElementModel.getUseElementMetaModel(), new EditUseGeometryManipulator());
 		}
-		if (metaModel == SVGCircleElementModel.getCircleElementMetaModel()) {
-			return new EditCircleGeometryManipulator();
-		}
-		if (metaModel == SVGEllipseElementModel.getEllipseElementMetaModel()) {
-			return new EditEllipseGeometryManipulator();
-		}
-		if (metaModel == SVGRectElementModel.getRectElementMetaModel()) {
-			return new EditRectGeometryManipulator();
-		}
-		if (metaModel == SVGPolygonElementModel.getPolygonElementMetaModel()) {
-			return new EditSVGPointsManipulator();
-		}
-		if (metaModel == SVGPolylineElementModel.getPolylineElementMetaModel()) {
-			return new EditSVGPointsManipulator();
-		}
-		if (metaModel == SVGViewBoxElementModel.getViewBoxElementMetaModel()) {
-			return new EditViewBoxGeometryManipulator();
-		}
-		if (metaModel == SVGPathElementModel.getPathElementMetaModel()) {
-			return new EditPathGeometryManipulator();
-		}
-		if (metaModel == SVGImageElementModel.getImageElementMetaModel()) {
-			return new EditImageGeometryManipulator();
-		}
-		return null;
+		MetaModel<?> metaModel = model.getMetaModel();
+		assert(metaModel != null);
+		return metaModelToManipulator.get(metaModel);
 	}
 }

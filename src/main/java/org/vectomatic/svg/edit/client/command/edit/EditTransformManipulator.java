@@ -19,7 +19,6 @@ package org.vectomatic.svg.edit.client.command.edit;
 
 import org.vectomatic.dom.svg.OMNode;
 import org.vectomatic.dom.svg.OMSVGCircleElement;
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGLineElement;
@@ -168,25 +167,24 @@ public class EditTransformManipulator extends EditManipulatorBase {
 		OMSVGElement clone = (OMSVGElement) element.cloneNode(true);
 		clone.removeAttribute(SVGConstants.SVG_TRANSFORM_ATTRIBUTE);
 		ISVGTransformable transformable = (ISVGTransformable)element;
-		svg = ((OMSVGElement)transformable).getOwnerSVGElement();
-		OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
+		svg = model.getOwner().getSvgElement();
 		bbox = transformable.getBBox();
 		GWT.log(bbox.getDescription());
 		
-		g0 = document.createSVGGElement();
+		g0 = new OMSVGGElement();
 		g0.setClassNameBaseVal(AppBundle.INSTANCE.css().transformManipulator());
 		g0.appendChild(clone);
-		translateHandle = document.createSVGRectElement(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight(), 0, 0);
+		translateHandle = new OMSVGRectElement(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight(), 0, 0);
 		// Handle size
 		float hs = Math.min(bbox.getWidth(), bbox.getHeight()) * 0.2f;
-		OMSVGGElement scaleHandleGroup = document.createSVGGElement();
-		scaleHandle1 = document.createSVGRectElement(bbox.getX(), bbox.getY(), hs, hs, 0, 0);
-		scaleHandle2 = document.createSVGRectElement(bbox.getX(), bbox.getMaxY() - hs, hs, hs, 0, 0);
-		scaleHandle3 = document.createSVGRectElement(bbox.getMaxX() - hs, bbox.getY(), hs, hs, 0, 0);
-		scaleHandle4 = document.createSVGRectElement(bbox.getMaxX() - hs, bbox.getMaxY() - hs, hs, hs, 0, 0);
+		OMSVGGElement scaleHandleGroup = new OMSVGGElement();
+		scaleHandle1 = new OMSVGRectElement(bbox.getX(), bbox.getY(), hs, hs, 0, 0);
+		scaleHandle2 = new OMSVGRectElement(bbox.getX(), bbox.getMaxY() - hs, hs, hs, 0, 0);
+		scaleHandle3 = new OMSVGRectElement(bbox.getMaxX() - hs, bbox.getY(), hs, hs, 0, 0);
+		scaleHandle4 = new OMSVGRectElement(bbox.getMaxX() - hs, bbox.getMaxY() - hs, hs, hs, 0, 0);
 		float rhr = (float)Math.sqrt(2 * hs * hs) * 0.5f;
-		OMSVGLineElement line = document.createSVGLineElement(bbox.getMaxX(), bbox.getCenterY(), bbox.getMaxX() + 0.25f * bbox.getWidth() - rhr, bbox.getCenterY());
-		rotateHandle = document.createSVGCircleElement(bbox.getMaxX() + 0.25f * bbox.getWidth(), bbox.getCenterY(), rhr);
+		OMSVGLineElement line = new OMSVGLineElement(bbox.getMaxX(), bbox.getCenterY(), bbox.getMaxX() + 0.25f * bbox.getWidth() - rhr, bbox.getCenterY());
+		rotateHandle = new OMSVGCircleElement(bbox.getMaxX() + 0.25f * bbox.getWidth(), bbox.getCenterY(), rhr);
 		g0.appendChild(translateHandle);
 		g0.appendChild(scaleHandleGroup);
 		scaleHandleGroup.appendChild(scaleHandle1);
@@ -199,7 +197,7 @@ public class EditTransformManipulator extends EditManipulatorBase {
 		// Compute the parent transform
 		OMSVGElement parent = OMNode.convert(model.getElement().getParentNode());
 		OMSVGMatrix xform = model.getOwner().getElementGroup().getTransformToElement(parent).inverse();
-		g = document.createSVGGElement();
+		g = new OMSVGGElement();
 		g.getTransform().getBaseVal().appendItem(svg.createSVGTransformFromMatrix(xform));
 		g.appendChild(g0);
 

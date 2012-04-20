@@ -1,5 +1,5 @@
 /**********************************************
- * Copyright (C) 2011, 2012 Lukas Laag
+ * Copyright (C) 2011 Lukas Laag
  * This file is part of svgreal.
  * 
  * svgreal is free software: you can redistribute it and/or modify
@@ -17,28 +17,37 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
+import org.vectomatic.dom.svg.OMElement;
 import org.vectomatic.dom.svg.OMSVGElement;
 import org.vectomatic.dom.svg.OMSVGGElement;
+import org.vectomatic.dom.svg.OMSVGLength;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
+import org.vectomatic.dom.svg.OMSVGRect;
 import org.vectomatic.dom.svg.OMSVGRectElement;
+import org.vectomatic.dom.svg.OMSVGSVGElement;
+import org.vectomatic.dom.svg.OMSVGSymbolElement;
+import org.vectomatic.dom.svg.OMSVGUseElement;
+import org.vectomatic.dom.svg.impl.SVGUseElement;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
-import org.vectomatic.svg.edit.client.model.svg.SVGElementModel;
+import org.vectomatic.svg.edit.client.engine.SVGModel;
+import org.vectomatic.svg.edit.client.model.svg.SVGLength;
+import org.vectomatic.svg.edit.client.model.svg.SVGUseElementModel;
 
 import com.extjs.gxt.ui.client.data.ChangeEvent;
 import com.extjs.gxt.ui.client.store.Record;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
- * 2D manipulator class to edit viewbox geometry.
+ * 2D manipulator class to edit rectangle geometry.
  */
-public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
+public class EditUseGeometryManipulator extends EditManipulatorBase {
 	protected static enum Mode {
 		PASSIVE {
 			public boolean consumeEvent() { return false; }
@@ -79,11 +88,20 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	 * Vector from the mousedown point to the manipulator handle hotspot
 	 */
 	protected OMSVGPoint delta;
+	/**
+	 * Mousedown point
+	 */
+	protected OMSVGPoint p0;
+	/**
+	 * True if the use element refers to an object which
+	 * has a width and height (svg or symbol), false otherwise.
+	 */
+	protected boolean hasDimensions;
 
 	/**
 	 * Constructor
 	 */
-	public EditViewBoxGeometryManipulator() {
+	public EditUseGeometryManipulator() {
 	}
 	/**
 	 * Binds this manipulator to the specified SVG rect.
@@ -94,28 +112,40 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public OMSVGElement bind(Record record) {
 		this.record = record;
-		SVGElementModel model = (SVGElementModel) record.getModel();
+		SVGUseElementModel model = (SVGUseElementModel) record.getModel();
 		mode = Mode.PASSIVE;
 		// Create the graphical representations for the manipulator
 		// The manipulator has the following SVG structure
 		// <g>
 		//  <rect/>    position
+		// { ... for use which refer to svg or symbol elements only
 		//  <g>
 		//   <rect/>   top-left corner
 		//   <rect/>   bottom-right corner
 		//  </g>
+		// ... }
 		// </g>
-		svg = model.getOwner().getSvgElement();
+		SVGModel owner = model.getOwner();
+		svg = owner.getSvgElement();
 		g = new OMSVGGElement();
 		g.setClassNameBaseVal(AppBundle.INSTANCE.css().rectGeometryManipulator());
 		posHandle = new OMSVGRectElement();
-		OMSVGGElement handleGroup = new OMSVGGElement();
-		topLeftHandle = new OMSVGRectElement();
-		bottomRightHandle = new OMSVGRectElement();
 		g.appendChild(posHandle);
-		g.appendChild(handleGroup);
-		handleGroup.appendChild(topLeftHandle);
-		handleGroup.appendChild(bottomRightHandle);
+		
+		// Allow editing dimensions only for use element
+		// which point to a <symbol> or <svg> element with a
+		// viewBox attribute defined
+		OMElement target = owner.dereference(model.getElement().<SVGUseElement>cast().getHref().getBaseVal());
+		hasDimensions = ((target instanceof OMSVGSymbolElement || target instanceof OMSVGSVGElement) && target.hasAttribute(SVGConstants.SVG_VIEW_BOX_ATTRIBUTE));
+		if (hasDimensions) {
+			OMSVGGElement handleGroup = new OMSVGGElement();
+			topLeftHandle = new OMSVGRectElement();
+			bottomRightHandle = new OMSVGRectElement();
+			g.appendChild(handleGroup);
+			handleGroup.appendChild(topLeftHandle);
+			handleGroup.appendChild(bottomRightHandle);
+		}
+
 		monitorModel = true;
 		model.addChangeListener(this);
 		scheduleInit();
@@ -132,7 +162,7 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 			if (parent != null) {
 				parent.removeChild(g.getElement());
 			}
-			SVGElementModel model = (SVGElementModel) record.getModel();
+			SVGUseElementModel model = (SVGUseElementModel) record.getModel();
 			model.removeChangeListener(this);
 			record = null;
 			g = null;
@@ -146,49 +176,75 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	@Override
 	public void modelChanged(ChangeEvent event) {
 		if (monitorModel) {
-			SVGElementModel model = (SVGElementModel) record.getModel();
+			SVGUseElementModel model = (SVGUseElementModel) record.getModel();
+			OMSVGUseElement use = (OMSVGUseElement) model.getElementWrapper();
+			OMSVGRect bbox = use.getBBox();
+			if (hasDimensions) {
+				float w = use.getWidth().getBaseVal().getValueInSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX);
+				float h = use.getHeight().getBaseVal().getValueInSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX);
+				posHandle.getX().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getX() + 0.5f * (bbox.getWidth() - w));
+				posHandle.getY().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getY() + 0.5f * (bbox.getHeight() - h));
+				posHandle.getWidth().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, w);
+				posHandle.getHeight().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX , h);
+				update();
+			} else {
+				posHandle.getX().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getX());
+				posHandle.getY().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getY());
+				posHandle.getWidth().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getWidth());
+				posHandle.getHeight().getBaseVal().newValueSpecifiedUnits(OMSVGLength.SVG_LENGTHTYPE_PX, bbox.getHeight());
+			}
+			posHandle.getX().getBaseVal().convertToSpecifiedUnits(use.getX().getBaseVal().getUnitType());
+			posHandle.getY().getBaseVal().convertToSpecifiedUnits(use.getY().getBaseVal().getUnitType());
+			posHandle.getWidth().getBaseVal().convertToSpecifiedUnits(use.getWidth().getBaseVal().getUnitType());
+			posHandle.getHeight().getBaseVal().convertToSpecifiedUnits(use.getHeight().getBaseVal().getUnitType());
 			super.modelChanged(event);
-			float x = model.<Float>get(SVGConstants.SVG_X_ATTRIBUTE);
-			float y = model.<Float>get(SVGConstants.SVG_Y_ATTRIBUTE);
-			float width = model.<Float>get(SVGConstants.SVG_WIDTH_ATTRIBUTE);
-			float height = model.<Float>get(SVGConstants.SVG_HEIGHT_ATTRIBUTE);
-			posHandle.getX().getBaseVal().newValueSpecifiedUnits(Unit.PX, x);
-			posHandle.getY().getBaseVal().newValueSpecifiedUnits(Unit.PX, y);
-			posHandle.getWidth().getBaseVal().newValueSpecifiedUnits(Unit.PX, width);
-			posHandle.getHeight().getBaseVal().newValueSpecifiedUnits(Unit.PX, height);
-			update();
 		}
 	}
 	
 	private void update() {
-		float x = posHandle.getX().getBaseVal().getValue();
-		float y = posHandle.getY().getBaseVal().getValue();
-		float width = posHandle.getWidth().getBaseVal().getValue();
-		float height = posHandle.getHeight().getBaseVal().getValue();
-		float hs = Math.max(5, Math.min(width, height) * 0.2f);
-		topLeftHandle.getX().getBaseVal().setValue(x);
-		topLeftHandle.getY().getBaseVal().setValue(y);
-		topLeftHandle.getWidth().getBaseVal().setValue(hs);
-		topLeftHandle.getHeight().getBaseVal().setValue(hs);
-		bottomRightHandle.getX().getBaseVal().setValue(x + width - hs);
-		bottomRightHandle.getY().getBaseVal().setValue(y + height - hs);
-		bottomRightHandle.getWidth().getBaseVal().setValue(hs);
-		bottomRightHandle.getHeight().getBaseVal().setValue(hs);
+		if (hasDimensions) {
+			float x = posHandle.getX().getBaseVal().getValue();
+			float y = posHandle.getY().getBaseVal().getValue();
+			float width = posHandle.getWidth().getBaseVal().getValue();
+			float height = posHandle.getHeight().getBaseVal().getValue();
+			float hs = Math.max(5, Math.min(width, height) * 0.2f);
+			topLeftHandle.getX().getBaseVal().setValue(x);
+			topLeftHandle.getY().getBaseVal().setValue(y);
+			topLeftHandle.getWidth().getBaseVal().setValue(hs);
+			topLeftHandle.getHeight().getBaseVal().setValue(hs);
+			bottomRightHandle.getX().getBaseVal().setValue(x + width - hs);
+			bottomRightHandle.getY().getBaseVal().setValue(y + height - hs);
+			bottomRightHandle.getWidth().getBaseVal().setValue(hs);
+			bottomRightHandle.getHeight().getBaseVal().setValue(hs);
+		}
 	}
 	
+
+		
 	@Override
 	public boolean processMouseUp(MouseUpEvent event) {
 		if (mode != Mode.PASSIVE) {
-			mode = Mode.PASSIVE;
 			monitorModel = false;
 			record.beginEdit();
-			record.set(SVGConstants.SVG_X_ATTRIBUTE, posHandle.getX().getBaseVal().getValue());
-			record.set(SVGConstants.SVG_Y_ATTRIBUTE, posHandle.getY().getBaseVal().getValue());
-			record.set(SVGConstants.SVG_WIDTH_ATTRIBUTE, posHandle.getWidth().getBaseVal().getValue());
-			record.set(SVGConstants.SVG_HEIGHT_ATTRIBUTE, posHandle.getHeight().getBaseVal().getValue());
+			if (mode != Mode.BOTTOM_RIGHT) {
+				OMSVGPoint d = getCoordinates(event, m).substract(p0);
+				SVGUseElementModel model = (SVGUseElementModel) record.getModel();
+				OMSVGUseElement use = (OMSVGUseElement) model.getElementWrapper();
+				OMSVGLength x = svg.createSVGLength(use.getX().getBaseVal().getUnit(), use.getX().getBaseVal().getValue() + d.getX());
+				OMSVGLength y = svg.createSVGLength(use.getY().getBaseVal().getUnit(), use.getY().getBaseVal().getValue() + d.getY());
+				record.set(SVGConstants.SVG_X_ATTRIBUTE, new SVGLength(x));
+				record.set(SVGConstants.SVG_Y_ATTRIBUTE, new SVGLength(y));
+			}
+			if (hasDimensions) {
+				GWT.log("w=" + posHandle.getWidth().getBaseVal().getValue());
+				GWT.log("h=" + posHandle.getWidth().getBaseVal().getValue());
+				record.set(SVGConstants.SVG_WIDTH_ATTRIBUTE, new SVGLength(posHandle.getWidth().getBaseVal()));
+				record.set(SVGConstants.SVG_HEIGHT_ATTRIBUTE, new SVGLength(posHandle.getHeight().getBaseVal()));
+			}
 			record.endEdit();
 			record.commit(false);
 			monitorModel = true;
+			mode = Mode.PASSIVE;
 		}
 		return true;
 	}
@@ -197,7 +253,8 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 	public boolean processMouseDown(MouseDownEvent event) {
 		JavaScriptObject target = event.getNativeEvent().getEventTarget();
 		m = g.getScreenCTM().inverse();
-		delta = getCoordinates(event, m);
+		p0 = getCoordinates(event, m);
+		delta = svg.createSVGPoint(p0);
 		float x = posHandle.getX().getBaseVal().getValue();
 		float y = posHandle.getY().getBaseVal().getValue();
 		float width = posHandle.getWidth().getBaseVal().getValue();
@@ -207,14 +264,16 @@ public class EditViewBoxGeometryManipulator extends EditManipulatorBase {
 			mode = Mode.POS;
 			p.setX(x);
 			p.setY(y);
-		} else if (target == topLeftHandle.getElement()) {
-			p.setX(x);
-			p.setY(y);
-			mode = Mode.TOP_LEFT;
-		} else if (target == bottomRightHandle.getElement()) {
-			p.setX(x + width);
-			p.setY(y + height);
-			mode = Mode.BOTTOM_RIGHT;
+		} else if (hasDimensions) {
+			if (target == topLeftHandle.getElement()) {
+				p.setX(x);
+				p.setY(y);
+				mode = Mode.TOP_LEFT;
+			} else if (target == bottomRightHandle.getElement()) {
+				p.setX(x + width);
+				p.setY(y + height);
+				mode = Mode.BOTTOM_RIGHT;
+			}
 		}
 		if (mode.consumeEvent()) {
 			delta.substract(p);

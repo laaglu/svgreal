@@ -779,7 +779,7 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 	public SVGWindow getWindow(SVGElement element) {
 		SVGSVGElement svg = element.getOwnerSVGElement();
 		for (SVGWindow svgWindow : svgWindows) {
-			if (svg == svgWindow.getSvgModel().getDocumentRoot().getElement()) {
+			if (svg == svgWindow.getSvgModel().getSvgElement().getElement()) {
 				return svgWindow;
 			}
 		}

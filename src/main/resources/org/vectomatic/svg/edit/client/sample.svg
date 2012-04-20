@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2000/svg file:///home/laaglu/workspaces/laaglu-ws/lib-gwt-svg/src/main/resources/org/vectomatic/dev/svg/impl/gen/SVG.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<ellipse id="e1" cx="0" cy="0" rx="30" ry="20" style="stroke:none;fill:turquoise;"/>
+		<symbol id="P" viewBox="0 0 45 45">
+			<g>
+				<path d="M 22 9 C 19.792 9 18 10.792 18 13 C 18 13.885103 18.29397 14.712226 18.78125 15.375 C 16.829274 16.496917 15.5 18.588492 15.5 21 C 15.5 23.033947 16.442042 24.839082 17.90625 26.03125 C 14.907101 27.08912 10.5 31.578049 10.5 39.5 L 33.5 39.5 C 33.5 31.578049 29.092899 27.08912 26.09375 26.03125 C 27.557958 24.839082 28.5 23.033948 28.5 21 C 28.5 18.588492 27.170726 16.496917 25.21875 15.375 C 25.70603 14.712226 26 13.885103 26 13 C 26 10.792 24.208 9 22 9 z " style="opacity:1;fill:white;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1"/>
+			</g>
+		</symbol>
+		<symbol id="p">
+			<g>
+				<path d="M 22 9 C 19.792 9 18 10.792 18 13 C 18 13.885103 18.29397 14.712226 18.78125 15.375 C 16.829274 16.496917 15.5 18.588492 15.5 21 C 15.5 23.033947 16.442042 24.839082 17.90625 26.03125 C 14.907101 27.08912 10.5 31.578049 10.5 39.5 L 33.5 39.5 C 33.5 31.578049 29.092899 27.08912 26.09375 26.03125 C 27.557958 24.839082 28.5 23.033948 28.5 21 C 28.5 18.588492 27.170726 16.496917 25.21875 15.375 C 25.70603 14.712226 26 13.885103 26 13 C 26 10.792 24.208 9 22 9 z " style="opacity:1;fill:black;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1"/>
+			</g>
+		</symbol>
+	</defs>
 	<ellipse cx="170" cy="140" rx="70" ry="40"
 		style="fill: blue; stroke: black; opacity: 0.5;">
 		<title>ellipse #1</title>
@@ -62,6 +75,9 @@
 	</image>
 	<path style="fill:green;stroke:black;fill-rule:evenodd;"
      d="M 75,75 h 250 v 250 h -250 z M 125,125 h 150 v 150 h -150 z M 175,175 h 50 v 50 h -50 z" />
+    <use xlink:href="#e1" x="500" y="30" transform="rotate(15)"/>
+    <use xlink:href="#P" x="500" y="30" width="150px" height="150px" transform="rotate(18)"/>
+    <use xlink:href="#p" x="450" y="30" width="150px" height="150px" transform="rotate(18)"/>
      <g>
 		<title>invalid</title>
 		<desc>to test invalid elements</desc>

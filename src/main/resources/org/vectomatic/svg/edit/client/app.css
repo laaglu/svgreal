@@ -325,7 +325,6 @@
 	stroke:#C00000;
 }
 
-
 /***************** Color editor *****************/
 
 @external colorEditor-HSliderBar-shell, colorEditor-HSliderBar-line, colorEditor-HSliderBar-knob, colorEditor-HSliderBar-tick, colorEditor-HSliderBar-label, colorEditor-HSliderBar-shell-focused, colorEditor-HSliderBar-line-sliding;

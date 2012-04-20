@@ -17,8 +17,8 @@
  **********************************************/
 package org.vectomatic.svg.edit.client.command.edit;
 
-import org.vectomatic.dom.svg.OMSVGDocument;
 import org.vectomatic.dom.svg.OMSVGElement;
+import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGLength;
 import org.vectomatic.dom.svg.OMSVGLineElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
@@ -114,14 +114,12 @@ public class EditLineGeometryManipulator extends EditManipulatorBase implements 
 			//  <rect/>    first handle
 			//  <rect/>    second handle
 			// </g>
-			OMSVGLineElement line = (OMSVGLineElement) model.getElementWrapper();
-			svg = line.getOwnerSVGElement();
-			OMSVGDocument document = (OMSVGDocument) svg.getOwnerDocument();
-			g = document.createSVGGElement();
+			svg = model.getOwner().getSvgElement();
+			g = new OMSVGGElement();
 			g.setClassNameBaseVal(AppBundle.INSTANCE.css().lineGeometryManipulator());
-			posHandle = document.createSVGLineElement();
-			p1Handle = document.createSVGRectElement();
-			p2Handle = document.createSVGRectElement();
+			posHandle = new OMSVGLineElement();
+			p1Handle = new OMSVGRectElement();
+			p2Handle = new OMSVGRectElement();
 			g.appendChild(posHandle);
 			g.appendChild(p1Handle);
 			g.appendChild(p2Handle);
