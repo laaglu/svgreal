@@ -23,13 +23,13 @@ import org.vectomatic.dom.svg.OMSVGGElement;
 import org.vectomatic.dom.svg.OMSVGMatrix;
 import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRectElement;
-import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.file.ErrorCode;
 import org.vectomatic.file.File;
 import org.vectomatic.file.FileError;
 import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileReader;
+import org.vectomatic.file.FileUtils;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
 import org.vectomatic.svg.edit.client.AppBundle;
@@ -214,7 +214,7 @@ public class EditImageGeometryManipulator extends EditManipulatorBase {
 	 						if (reader.getError() == null) {
 		 						try {
 		 							String result = reader.getStringResult();
-		 							String url = "data:" + type + ";base64," + DOMHelper.base64encode(result);
+		 							String url = FileUtils.createDataUrl(type, result);
 		 							((SVGImageElementModel)record.getModel()).setResourceName(resourceName);
 		 							record.set(SVGConstants.XLINK_HREF_ATTRIBUTE, url);
 		 							record.commit(false);

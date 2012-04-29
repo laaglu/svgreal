@@ -26,7 +26,7 @@ import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRect;
 import org.vectomatic.dom.svg.OMSVGSVGElement;
 import org.vectomatic.dom.svg.impl.SVGSVGElement;
-import org.vectomatic.dom.svg.itf.ISVGTransformable;
+import org.vectomatic.dom.svg.itf.ISVGLocatable;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
 import org.vectomatic.svg.edit.client.AppCss;
@@ -68,12 +68,12 @@ public class DNDGhost {
 		AppCss css = AppBundle.INSTANCE.css();
 		OMSVGSVGElement svg = new OMSVGSVGElement();
 		OMSVGElement svgElement = sourceElements.get(0).getElementWrapper();
-		ISVGTransformable transformable = (ISVGTransformable) svgElement;
-	    OMSVGRect bbox = getScreenBBox(svg, transformable);
+		ISVGLocatable locatable = (ISVGLocatable) svgElement;
+	    OMSVGRect bbox = getScreenBBox(svg, locatable);
 		OMSVGRect viewBox = svg.getViewBox().getBaseVal();
 		bbox.assignTo(viewBox);
 		OMSVGElement clone = (OMSVGElement) svgElement.cloneNode(true);
-		OMSVGMatrix m = transformable.getCTM();
+		OMSVGMatrix m = locatable.getCTM();
 		if (!m.isIdentity()) {
 			StringBuilder builder = new StringBuilder();
 			builder.append(SVGConstants.TRANSFORM_MATRIX + "(");
@@ -120,9 +120,9 @@ public class DNDGhost {
 		return (com.google.gwt.user.client.Element) ghostElement.cast();
 	}
 
-	private static OMSVGRect getScreenBBox(OMSVGSVGElement svg, ISVGTransformable transformable) {
-		OMSVGRect bbox = transformable.getBBox();
-	    OMSVGMatrix m = transformable.getCTM();
+	private static OMSVGRect getScreenBBox(OMSVGSVGElement svg, ISVGLocatable locatable) {
+		OMSVGRect bbox = locatable.getBBox();
+	    OMSVGMatrix m = locatable.getCTM();
 	    List<OMSVGPoint> list = new ArrayList<OMSVGPoint>();
 	    list.add(svg.createSVGPoint(bbox.getX(), bbox.getY()).matrixTransform(m));
 	    list.add(svg.createSVGPoint(bbox.getMaxX(), bbox.getY()).matrixTransform(m));

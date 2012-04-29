@@ -19,13 +19,13 @@ package org.vectomatic.svg.edit.client.gxt.form;
 
 import org.vectomatic.dnd.DataTransferExt;
 import org.vectomatic.dnd.DropPanel;
-import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.file.ErrorCode;
 import org.vectomatic.file.File;
 import org.vectomatic.file.FileError;
 import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
+import org.vectomatic.file.FileUtils;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
 import org.vectomatic.svg.edit.client.AppBundle;
@@ -396,7 +396,7 @@ public class ImageHrefField extends AdapterField implements HasValueChangeHandle
 		 						if (reader.getError() == null) {
 			 						try {
 			 							String result = reader.getStringResult();
-			 							String url = "data:" + type + ";base64," + DOMHelper.base64encode(result);
+			 							String url = FileUtils.createDataUrl(type, result);
 			 							setValue(url, false);
 			 						} catch(Throwable t) {
 			 							reportError(t.getMessage());

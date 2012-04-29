@@ -209,7 +209,7 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 	/**
 	 * Associates element ids with their model
 	 */
-	protected Map<String, SVGElementModel> idToModel;
+	protected Map<String, Object> idToModel;
 	/**
 	 * The svg rect use to represent the viewBox
 	 */
@@ -231,7 +231,7 @@ public class SVGModel implements MouseDownHandler, MouseMoveHandler, MouseUpHand
 
 	public SVGModel() {
 		elementToModel = new HashMap<SVGElement, SVGElementModel>();
-		idToModel = new HashMap<String, SVGElementModel>();
+		idToModel = new HashMap<String, Object>();
 		tagNameToTagCount = new HashMap<String, Integer>();
 		grid = new Grid();
 	}
