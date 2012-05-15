@@ -29,7 +29,7 @@ public class FetchUtils {
 	 */
 	public static final String FETCH_URI = "fetch";
 	public static final String FETCH_URL_PARAM = "url";
-	public static final String FETCH_TYPE_PARAM = "url";
+	public static final String FETCH_TYPE_PARAM = "type";
 
 	public static String getFetchUrl(String url, String type) {
 		StringBuilder builder = new StringBuilder();
