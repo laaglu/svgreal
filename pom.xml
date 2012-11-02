@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.vectomatic</groupId>
 		<artifactId>vectomatic-gwt-parent</artifactId>
-		<version>0.1</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>svgreal</artifactId>
 	<version>0.2.3-SNAPSHOT</version>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.google</groupId>
 			<artifactId>gwt-incubator-slider</artifactId>
-			<version>0.1</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.extjs</groupId>
