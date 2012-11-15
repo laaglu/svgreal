@@ -57,8 +57,9 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>httpunit</groupId>
+			<groupId>org.httpunit</groupId>
 			<artifactId>httpunit</artifactId>
+            <version>1.7.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
