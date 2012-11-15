@@ -149,7 +149,6 @@ public class RSSReader extends Dialog {
               }
         });
 	    add(view);
-	    load();
 	}
 
 	public void load() {
@@ -164,9 +163,12 @@ public class RSSReader extends Dialog {
 			}
 
 			private void onSuccess(Request request, Response response) {
+				store.removeAll();
+				
 				// Create a store of BeanModel of RSSEntry
 				SVGParserImpl impl = GWT.create(SVGParserImpl.class);
-				Document doc = impl.parseFromString(response.getText(), "text/xml").cast();
+				String responseText = response.getText();
+				Document doc = impl.parseFromString(responseText, "text/xml").cast();
 				OMElement root = OMNode.convert(doc.getDocumentElement());
 
 

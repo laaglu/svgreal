@@ -665,6 +665,7 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 		if (rssReader == null) {
 			rssReader = new RSSReader();
 		}
+		rssReader.load();
 		rssReader.show();
 	}
 
