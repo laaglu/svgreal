@@ -411,8 +411,8 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 		AppConstants cst = AppConstants.INSTANCE;
 		final MenuItem newDocumentMenuItem = new MenuItem(cst.newDocumentMenuItem());
 		fileMenu.add(newDocumentMenuItem);
-		final MenuItem openUrlItem = new MenuItem(cst.openUrlMenuItem());
-		fileMenu.add(openUrlItem);
+		/*final MenuItem openUrlItem = new MenuItem(cst.openUrlMenuItem());
+		fileMenu.add(openUrlItem);*/
 		final MenuItem openLocalMenuItem = new MenuItem(cst.openLocalMenuItem());
 		fileMenu.add(openLocalMenuItem);
 		final MenuItem openRssFeedItem = new MenuItem(cst.openRssFeedMenuItem());
@@ -462,8 +462,8 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 				MenuItem item = (MenuItem) me.getItem();
 				if (item == newDocumentMenuItem) {
 					newDocument();
-				} else if (item == openUrlItem) {
-					openUrl();
+//				} else if (item == openUrlItem) {
+//					openUrl();
 				} else if (item == openLocalMenuItem) {
 					openLocal();
 				} else if (item == openRssFeedItem) {
@@ -496,7 +496,7 @@ public class SvgrealApp implements EntryPoint, HasActivateWindowHandlers, HasDea
 			}
 		};
 		newDocumentMenuItem.addSelectionListener(dispatcher);
-		openUrlItem.addSelectionListener(dispatcher);
+//		openUrlItem.addSelectionListener(dispatcher);
 		openLocalMenuItem.addSelectionListener(dispatcher);
 		openRssFeedItem.addSelectionListener(dispatcher);
 		exportAsSvgMenuItem.addSelectionListener(dispatcher);
