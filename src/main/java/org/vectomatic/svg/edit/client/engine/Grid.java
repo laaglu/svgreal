@@ -27,6 +27,7 @@ import org.vectomatic.dom.svg.OMSVGPatternElement;
 import org.vectomatic.dom.svg.OMSVGPoint;
 import org.vectomatic.dom.svg.OMSVGRectElement;
 import org.vectomatic.dom.svg.OMSVGSVGElement;
+import org.vectomatic.dom.svg.impl.SVGSVGElement;
 import org.vectomatic.dom.svg.utils.DOMHelper;
 import org.vectomatic.dom.svg.utils.SVGConstants;
 import org.vectomatic.svg.edit.client.AppBundle;
@@ -380,10 +381,22 @@ public class Grid {
 		pattern.getY().getBaseVal().newValueSpecifiedUnits(Unit.PX, y);
 		pattern.getWidth().getBaseVal().newValueSpecifiedUnits(Unit.PX, width);
 		pattern.getHeight().getBaseVal().newValueSpecifiedUnits(Unit.PX, height);
-		pattern.getViewBox().getBaseVal().setX(x);
-		pattern.getViewBox().getBaseVal().setY(y);
-		pattern.getViewBox().getBaseVal().setWidth(width);
-		pattern.getViewBox().getBaseVal().setHeight(height);
+		if (!pattern.hasAttribute(SVGConstants.SVG_VIEW_BOX_ATTRIBUTE)) {
+			StringBuilder builder = new StringBuilder();
+			builder.append(x);
+			builder.append(" ");
+			builder.append(y);
+			builder.append(" ");
+			builder.append(width);
+			builder.append(" ");
+			builder.append(height);
+			pattern.setAttribute(SVGConstants.SVG_VIEW_BOX_ATTRIBUTE, builder.toString());
+		} else {
+			pattern.getViewBox().getBaseVal().setX(x);
+			pattern.getViewBox().getBaseVal().setY(y);
+			pattern.getViewBox().getBaseVal().setWidth(width);
+			pattern.getViewBox().getBaseVal().setHeight(height);			
+		}
 		pattern.setAttribute(SVGConstants.SVG_PATTERN_UNITS_ATTRIBUTE, SVGConstants.SVG_USER_SPACE_ON_USE_VALUE);
 		return pattern;
 	}
