@@ -49,6 +49,7 @@ public class FetchUtils {
 		builder.append("=");
 		builder.append(type);
 		return builder.toString();*/
-		return url.replace("http://www.openclipart.org", base + "openclipart");
+		return url.replace("http://www.openclipart.org", base + "openclipart")
+				  .replace("http://openclipart.org", base + "openclipart");
 	}
 }
