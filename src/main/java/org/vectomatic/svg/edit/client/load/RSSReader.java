@@ -154,8 +154,7 @@ public class RSSReader extends Dialog {
 	public void load() {
 
 		final String url = "http://www.openclipart.org/rss/new.xml";
-//		String resourceUrl = FetchUtils.getFetchUrl(url, "text/xml");
-		String resourceUrl = GWT.getHostPageBaseURL() + "openclipart/rss/new.xml";
+		String resourceUrl = FetchUtils.getFetchUrl(url, "text/xml");
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, resourceUrl);
 		requestBuilder.setCallback(new RequestCallback() {
 			public void onError(Request request, Throwable e) {

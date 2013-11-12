@@ -34,11 +34,11 @@ public class FetchUtils {
 	public static String getFetchUrl(String url, String type) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(GWT.getHostPageBaseURL());
-		builder.append(FETCH_URI);
+		//builder.append(FETCH_URI);
 		return getFetchUrl(builder.toString(), url, type);
 	}
 	public static String getFetchUrl(String base, String url, String type) {
-		StringBuilder builder = new StringBuilder();
+		/*StringBuilder builder = new StringBuilder();
 		builder.append(base);
 		builder.append("?");
 		builder.append(FETCH_URL_PARAM);
@@ -48,6 +48,7 @@ public class FetchUtils {
 		builder.append(FETCH_TYPE_PARAM);
 		builder.append("=");
 		builder.append(type);
-		return builder.toString();
+		return builder.toString();*/
+		return url.replace("http://www.openclipart.org", base + "openclipart");
 	}
 }
