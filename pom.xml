@@ -6,7 +6,7 @@
 		<version>0.3</version>
 	</parent>
 	<artifactId>svgreal</artifactId>
-	<version>0.2.5</version>
+	<version>0.2.6-SNAPSHOT</version>
 	<name>svgreal</name>
 	<packaging>war</packaging>
 	<description>An SVG view and editor based on lib-gwt-svg and Ext-GWT</description>
