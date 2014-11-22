@@ -96,27 +96,45 @@
 					<packagingExcludes>%regex[WEB-INF/lib/(?!log4j).*.jar],%regex[WEB-INF/classes/(?!org/vectomatic/svg/edit/server/FetchServlet\.class|log4j\.properties).*]</packagingExcludes>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-              <!-- Use patch version of GWT maven plugin to address
-               http://jira.codehaus.org/browse/MGWT-216 and http://jira.codehaus.org/browse/MGWT-285 -->
-                <version>2.7.0</version>
-                <executions>
-                    <execution>
-                        <id>gwt unit tests</id>
-                        <configuration>
-                            <includes>**/*GwtTestSuite.java</includes>
-                            <mode>selenium</mode>
-                            <testTimeOut>240</testTimeOut>
-                            <selenium>localhost:4444/*firefox"</selenium>
-                        </configuration>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+			  <!-- Use patch version of GWT maven plugin to address
+			   http://jira.codehaus.org/browse/MGWT-216 and http://jira.codehaus.org/browse/MGWT-285 -->
+				<version>2.7.0</version>
+				<executions>
+					<execution>
+						<id>gwt compilation</id>
+						<configuration>
+							<modules>
+								<module>${gwt.module}</module>
+							</modules>
+							<style>${gwt.style}</style>
+							<logLevel>${gwt.logLevel}</logLevel>
+							<localWorkers>${gwt.localWorkers}</localWorkers>
+							<extraJvmArgs>-Xmx512m</extraJvmArgs>
+							<gen>${project.build.directory}/gen</gen>
+							<extra>${project.build.directory}/aux</extra>
+                            <enableClosureCompiler>true</enableClosureCompiler>
+						</configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>gwt unit tests</id>
+						<configuration>
+							<includes>**/*GwtTestSuite.java</includes>
+							<mode>selenium</mode>
+							<testTimeOut>240</testTimeOut>
+      						<selenium>localhost:4444/*firefox</selenium>
+      					</configuration>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<distributionManagement>
