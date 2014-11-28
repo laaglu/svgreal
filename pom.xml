@@ -115,7 +115,7 @@
 							<extraJvmArgs>-Xmx512m</extraJvmArgs>
 							<gen>${project.build.directory}/gen</gen>
 							<extra>${project.build.directory}/aux</extra>
-                            <enableClosureCompiler>true</enableClosureCompiler>
+                            <enableClosureCompiler>false</enableClosureCompiler>
 						</configuration>
 						<goals>
 							<goal>compile</goal>
