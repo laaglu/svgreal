@@ -18,16 +18,16 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>scm:git:git@github.com:laaglu/svgreal.git</url>
-		<connection>scm:git:git@github.com:laaglu/svgreal.git</connection>
-		<developerConnection>scm:git:git@github.com:laaglu/svgreal.git</developerConnection>
+		<url>scm:git:git://git/svgreal.git</url>
+		<connection>scm:git:git://git/svgreal.git</connection>
+		<developerConnection>scm:git:git://git/svgreal.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.vectomatic</groupId>
 			<artifactId>lib-gwt-svg</artifactId>
-			<version>0.5.10</version>
+			<version>0.5.11-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.vectomatic</groupId>
