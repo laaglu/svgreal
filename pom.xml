@@ -125,7 +125,7 @@
 					<execution>
 						<id>gwt unit tests</id>
 						<configuration>
-							<includes>**/*GwtTestSuite.java</includes>
+							<includes>**/*GwtTestSuite.java.disabled</includes>
 							<mode>selenium</mode>
 							<testTimeOut>240</testTimeOut>
       						<selenium>localhost:4444/*firefox</selenium>
