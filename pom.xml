@@ -32,12 +32,12 @@
 		<dependency>
 			<groupId>org.vectomatic</groupId>
 			<artifactId>lib-gwt-file</artifactId>
-			<version>0.3.7-SNAPSHOT</version>
+			<version>0.3.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google</groupId>
 			<artifactId>gwt-incubator-slider</artifactId>
-			<version>>0.1.5-SNAPSHOT</version>
+			<version>>0.1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.extjs</groupId>
