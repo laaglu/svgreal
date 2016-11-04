@@ -89,7 +89,7 @@ public class CloneCommand extends DndCommandBase {
 		if (clones == null) {
 			clones = new ArrayList<SVGElementModel>();
 			for (SVGElementModel model : models) {
-				SVGElementModel clone = owner.clone(model, Format.substitute(ModelConstants.INSTANCE.copyOf(), model.get(SVGConstants.SVG_TITLE_TAG)));
+				SVGElementModel clone = owner.clone(model, Format.substitute(ModelConstants.INSTANCE.copyOf(), (CharSequence)model.get(SVGConstants.SVG_TITLE_TAG)));
 				clones.add(clone);
 			}
 		}
