@@ -116,7 +116,7 @@ public class InspectorWindow extends Window implements SelectionChangedProcessor
 				currentInspector = getInspector(model);
 				currentInspector.bind(model);
 				contentPanel = currentInspector;
-				heading.append((CharSequence)model.get(SVGConstants.SVG_TITLE_TAG));
+				heading.append(model.get(SVGConstants.SVG_TITLE_TAG).toString());
 			}
 		}
 		cardLayout.setActiveItem(contentPanel);

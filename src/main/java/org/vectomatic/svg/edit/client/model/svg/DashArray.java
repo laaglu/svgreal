@@ -62,7 +62,7 @@ public class DashArray extends BaseModel implements Comparable<DashArray> {
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
-			builder.append((CharSequence)get(VALUE_PROPERTY));
+			builder.append(get(VALUE_PROPERTY).toString());
 			Unit unit = get(UNIT_PROPERTY);
 			if (unit != null) {
 				builder.append(unit);
