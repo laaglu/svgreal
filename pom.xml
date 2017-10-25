@@ -6,7 +6,7 @@
 		<version>0.8</version>
 	</parent>
 	<artifactId>svgreal</artifactId>
-	<version>0.2.11</version>
+	<version>0.2.12-SNAPSHOT</version>
 	<name>svgreal</name>
 	<packaging>war</packaging>
 	<description>An SVG view and editor based on lib-gwt-svg and Ext-GWT</description>
@@ -21,7 +21,7 @@
 		<url>scm:git:git://git/svgreal.git</url>
 		<connection>scm:git:git://git/svgreal.git</connection>
 		<developerConnection>scm:git:git://git/svgreal.git</developerConnection>
-	  <tag>0.2.11</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<dependencies>
 		<dependency>
